@@ -1,19 +1,25 @@
+using Estreya.MumbleMock.Extensions;
 using Estreya.MumbleMock.Logging;
+using Estreya.MumbleMock.Models;
 using Estreya.MumbleMock.MumbleLink;
 using Gw2Sharp.Mumble;
 using Gw2Sharp.Mumble.Models;
 using Gw2Sharp.WebApi.V2.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Estreya.MumbleMock;
 
 public partial class MainForm : Form
 {
     private uint _uiTick = 0;
-    private Gw2MumbleClientWriter _mumbleWriter;
+    private Gw2MumbleClientWriter? _mumbleWriter;
     private Logger _logger;
     private List<Race>? _races;
     private List<Profession>? _professions;
@@ -33,10 +39,7 @@ public partial class MainForm : Form
 
         this._logger = new Logger(this.rtb_Log);
 
-        this._mumbleWriter = new Gw2MumbleClientWriter("MumbleLink");
-        this._mumbleWriter.Open();
-
-        this._logger.Info("Memory Map connected.");
+        this.CreateAndOpenMumbleWriter();
     }
 
     private async void MainForm_Load(object? sender, EventArgs e)
@@ -139,7 +142,7 @@ public partial class MainForm : Form
             { "world_id", this.GetWorld() },
             { "team_color_id", 0 },
             { "commander", this.cb_Identity_IsCommander.Checked },
-            { "fov", string.IsNullOrWhiteSpace(this.tb_UI_FOV.Text) ? 0.873 : float.Parse(this.tb_UI_FOV.Text, CultureInfo.InvariantCulture) },
+            { "fov", this.GetFOV() },
             { "uisz", this.GetUIScale() },
         };
 
@@ -160,18 +163,29 @@ public partial class MainForm : Form
         mem.context.instance = 0;
         mem.context.buildId = string.IsNullOrWhiteSpace(this.tb_Game_BuildId.Text) ? 0 : Convert.ToUInt32(this.tb_Game_BuildId.Text);
         mem.context.uiState = this.GetUIState();
-        mem.context.compassWidth = string.IsNullOrWhiteSpace(this.tb_UI_CompassWidth.Text) ? (ushort)0 : ushort.Parse(this.tb_UI_CompassWidth.Text, CultureInfo.InvariantCulture);
-        mem.context.compassHeight = string.IsNullOrWhiteSpace(this.tb_UI_CompassHeight.Text) ? (ushort)0 : ushort.Parse(this.tb_UI_CompassHeight.Text, CultureInfo.InvariantCulture);
-        mem.context.compassRotation = !this.cb_UI_IsCompassRotationEnabled.Checked || string.IsNullOrWhiteSpace(this.tb_UI_CompassRotation.Text) ? (ushort)0 : ushort.Parse(this.tb_UI_CompassRotation.Text, CultureInfo.InvariantCulture);
-        mem.context.playerMapX = string.IsNullOrWhiteSpace(this.tb_Map_PlayerX.Text) ? 0 : float.Parse(this.tb_Map_PlayerX.Text, CultureInfo.InvariantCulture);
-        mem.context.playerMapY = string.IsNullOrWhiteSpace(this.tb_Map_PlayerY.Text) ? 0 : float.Parse(this.tb_Map_PlayerY.Text, CultureInfo.InvariantCulture);
-        mem.context.mapCenterX = string.IsNullOrWhiteSpace(this.tb_Map_CenterX.Text) ? 0 : float.Parse(this.tb_Map_CenterX.Text, CultureInfo.InvariantCulture);
-        mem.context.mapCenterY = string.IsNullOrWhiteSpace(this.tb_Map_CenterY.Text) ? 0 : float.Parse(this.tb_Map_CenterY.Text, CultureInfo.InvariantCulture);
-        mem.context.mapScale = string.IsNullOrWhiteSpace(this.tb_Map_Scale.Text) ? 0 : float.Parse(this.tb_Map_Scale.Text, CultureInfo.InvariantCulture);
+
+        var compassSize = this.GetCompassSize();
+        mem.context.compassWidth = (ushort)compassSize.Width;
+        mem.context.compassHeight = (ushort)compassSize.Height;
+        mem.context.compassRotation = this.GetCompassRotation();
+
+        var playerMapPosition = this.GetPlayerMapPosition();
+        mem.context.playerMapX = playerMapPosition.X;
+        mem.context.playerMapY = playerMapPosition.Y;
+
+        var mapCenter = this.GetMapCenter();
+        mem.context.mapCenterX = mapCenter.X;
+        mem.context.mapCenterY = mapCenter.Y;
+        mem.context.mapScale = this.GetMapScale();
         mem.context.processId = (uint)(this._selectedProcess?.Id ?? 0);
         mem.context.mount = (Gw2Sharp.Models.MountType)this.GetMount();
 
         return mem;
+    }
+
+    private float GetFOV()
+    {
+        return string.IsNullOrWhiteSpace(this.tb_UI_FOV.Text) ? 0.873f : float.Parse(this.tb_UI_FOV.Text, CultureInfo.InvariantCulture);
     }
 
     private int GetRace()
@@ -285,8 +299,44 @@ public partial class MainForm : Form
         return uiState;
     }
 
+    private Size GetCompassSize()
+    {
+        return new Size(
+            string.IsNullOrWhiteSpace(this.tb_UI_CompassWidth.Text) ? 0 : ushort.Parse(this.tb_UI_CompassWidth.Text, CultureInfo.InvariantCulture),
+            string.IsNullOrWhiteSpace(this.tb_UI_CompassHeight.Text) ? 0 : ushort.Parse(this.tb_UI_CompassHeight.Text, CultureInfo.InvariantCulture)
+        );
+    }
+
+    private float GetCompassRotation()
+    {
+        return !this.cb_UI_IsCompassRotationEnabled.Checked || string.IsNullOrWhiteSpace(this.tb_UI_CompassRotation.Text) ? 0f : float.Parse(this.tb_UI_CompassRotation.Text, CultureInfo.InvariantCulture);
+    }
+
+    private Vector2 GetPlayerMapPosition()
+    {
+        return new Vector2(
+            string.IsNullOrWhiteSpace(this.tb_Map_PlayerX.Text) ? 0 : float.Parse(this.tb_Map_PlayerX.Text, CultureInfo.InvariantCulture),
+            string.IsNullOrWhiteSpace(this.tb_Map_PlayerY.Text) ? 0 : float.Parse(this.tb_Map_PlayerY.Text, CultureInfo.InvariantCulture)
+        );
+    }
+
+    private Vector2 GetMapCenter()
+    {
+        return new Vector2(
+            string.IsNullOrWhiteSpace(this.tb_Map_CenterX.Text) ? 0 : float.Parse(this.tb_Map_CenterX.Text, CultureInfo.InvariantCulture),
+            string.IsNullOrWhiteSpace(this.tb_Map_CenterY.Text) ? 0 : float.Parse(this.tb_Map_CenterY.Text, CultureInfo.InvariantCulture)
+        );
+    }
+
+    private float GetMapScale()
+    {
+        return string.IsNullOrWhiteSpace(this.tb_Map_Scale.Text) ? 0 : float.Parse(this.tb_Map_Scale.Text, CultureInfo.InvariantCulture);
+    }
+
     private unsafe void MumbleUpdate_timer_Tick(object sender, EventArgs e)
     {
+        if (this._mumbleWriter is null) return;
+
         try
         {
             this._uiTick++;
@@ -360,23 +410,23 @@ public partial class MainForm : Form
 
         if (this._professions is not null)
         {
-            this.cb_Identity_Profession.Items.AddRange(this._professions.Select(x => x.Name).ToArray());
+            this.cb_Identity_Profession.Items.AddRange(this._professions.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
         }
 
         if (this._specializations is not null)
         {
-            this.cb_Identity_Spec.Items.AddRange(this._specializations.Select(x => x.Name).ToArray());
+            this.cb_Identity_Spec.Items.AddRange(this._specializations.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
         }
 
         if (this._maps is not null)
         {
-            this.cb_Map_ID.Items.AddRange(this._maps.Select(x => x.Name).ToArray());
+            this.cb_Map_ID.Items.AddRange(this._maps.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
             this.cb_Map_Type.Items.AddRange(this._maps.Select(x => x.Type.ToString()).Distinct().ToArray());
         }
 
         if (this._worlds is not null)
         {
-            this.cb_World_ID.Items.AddRange(this._worlds.Select(x => x.Name).ToArray());
+            this.cb_World_ID.Items.AddRange(this._worlds.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
         }
 
         this.cb_Identity_Mount.Items.Add(string.Empty);
@@ -405,5 +455,168 @@ public partial class MainForm : Form
     private void cb_UI_IsCompassRotationEnabled_CheckedChanged(object sender, EventArgs e)
     {
         this.tb_UI_CompassRotation.Enabled = this.cb_UI_IsCompassRotationEnabled.Checked;
+    }
+
+    private void CreateAndOpenMumbleWriter()
+    {
+        if (this._mumbleWriter is not null)
+        {
+            this._mumbleWriter.Write(new Gw2LinkedMem());
+            this._mumbleWriter.Dispose();
+            this._logger.Info($"Memory Map \"{this._mumbleWriter.MumbleLinkName}\" deleted.");
+        }
+
+        this._uiTick = 0;
+        this._mumbleWriter = new Gw2MumbleClientWriter("MumbleLink");
+        this._mumbleWriter.Open();
+
+        this._logger.Info($"Memory Map \"{this._mumbleWriter.MumbleLinkName}\" connected.");
+    }
+
+    private void btn_RecreateMemoryMap_Click(object sender, EventArgs e)
+    {
+        this.CreateAndOpenMumbleWriter();
+    }
+
+    private void tsmi_Export_Click(object sender, EventArgs e)
+    {
+        var sfd = new SaveFileDialog
+        {
+            Filter = "JSON (*.json)|*.json",
+            FileName = "MumbleMock.json"
+        };
+
+        var result = sfd.ShowDialog();
+
+        if (result != DialogResult.OK) return;
+
+        var compassSize = this.GetCompassSize();
+        var json = JsonConvert.SerializeObject(new SaveData()
+        {
+            AvatarPosition = this.GetAvatarPositon().ToVector3(),
+            AvatarFront = this.GetAvatarFront().ToVector3(),
+            AvatarTop = Vector3.Zero,
+            CameraPosition = this.GetCameraPositon().ToVector3(),
+            CameraFront = this.GetCameraFront().ToVector3(),
+            CameraTop = Vector3.Zero,
+            Identity = new Identity()
+            {
+                Name = this.tb_Identity_Name.Text,
+                Race = this.cb_Identity_Race.SelectedItem?.ToString(),
+                Profession = this.cb_Identity_Profession.SelectedItem?.ToString(),
+                Specialization = this.cb_Identity_Spec.SelectedItem?.ToString(),
+                WorldId = this.cb_World_ID.SelectedItem?.ToString(),
+                UISize = this.cb_UI_Scale.SelectedItem?.ToString(),
+                TeamColorId = 0,
+                IsCommander = this.cb_Identity_IsCommander.Checked,
+                FOV = this.GetFOV()
+            },
+            Context = new Context()
+            {
+                BuildId = this.tb_Game_BuildId.Text,
+                UiState = this.GetUIState(),
+                CompassHeight = (ushort)compassSize.Height,
+                CompassWidth = (ushort)compassSize.Width,
+                CompassRotation = this.GetCompassRotation(),
+                PlayerPosition = this.GetPlayerMapPosition(),
+                MapCenter = this.GetMapCenter(),
+                MapScale = this.GetMapScale(),
+                MapId = this.cb_Map_ID.SelectedItem?.ToString(),
+                MapType = this.cb_Map_Type.SelectedItem?.ToString(),
+                Mount = this.cb_Identity_Mount.SelectedItem?.ToString(),
+            }
+        }, this.GetJsonSerializerSettings()) ;
+
+        System.IO.File.WriteAllText(sfd.FileName, json);
+    }
+
+    private void tsmi_Import_Click(object sender, EventArgs e)
+    {
+        var ofd = new OpenFileDialog()
+        {
+            Filter = "JSON (*.json)|*.json",
+            FileName = "MumbleMock.json",
+            CheckFileExists = true
+        };
+
+        var result = ofd.ShowDialog();
+
+        if (result != DialogResult.OK) return;
+
+        var json = System.IO.File.ReadAllText(ofd.FileName);
+
+        var saveData = JsonConvert.DeserializeObject<SaveData>(json);
+
+        if (saveData is null) return;
+
+        this.tb_AvatarPosition_X.Text = saveData.AvatarPosition.X.ToString();
+        this.tb_AvatarPosition_Y.Text = saveData.AvatarPosition.Y.ToString();
+        this.tb_AvatarPosition_Z.Text = saveData.AvatarPosition.Z.ToString();
+        this.tb_AvatarFront_X.Text = saveData.AvatarFront.X.ToString();
+        this.tb_AvatarFront_Y.Text = saveData.AvatarFront.Y.ToString();
+        this.tb_AvatarFront_Z.Text = saveData.AvatarFront.Z.ToString();
+        this.tb_CameraPosition_X.Text = saveData.CameraPosition.X.ToString();
+        this.tb_CameraPosition_Y.Text = saveData.CameraPosition.Y.ToString();
+        this.tb_CameraPosition_Z.Text = saveData.CameraPosition.Z.ToString();
+        this.tb_CameraFront_X.Text = saveData.CameraFront.X.ToString();
+        this.tb_CameraFront_Y.Text = saveData.CameraFront.Y.ToString();
+        this.tb_CameraFront_Z.Text = saveData.CameraFront.Z.ToString();
+
+        if (saveData.Identity is not null)
+        {
+            this.tb_Identity_Name.Text = saveData.Identity.Name;
+            this.cb_Identity_Race.SelectedItem = saveData.Identity.Race;
+            this.cb_Identity_Profession.SelectedItem = saveData.Identity.Profession;
+            this.cb_Identity_Spec.SelectedItem = saveData.Identity.Specialization;
+            this.cb_World_ID.SelectedItem = saveData.Identity.WorldId;
+            this.cb_UI_Scale.SelectedItem = saveData.Identity.UISize;
+            this.cb_Identity_IsCommander.Checked = saveData.Identity.IsCommander;
+            this.tb_UI_FOV.Text = saveData.Identity.FOV.ToString();
+        }
+
+        if (saveData.Context is not null)
+        {
+            this.tb_Game_BuildId.Text = saveData.Context.BuildId;
+            this.cb_UI_IsMapOpen.Checked = saveData.Context.UiState.HasFlag(UiState.IsMapOpen);
+            this.cb_UI_IsCompassTopRight.Checked = saveData.Context.UiState.HasFlag(UiState.IsCompassTopRight);
+            this.cb_UI_IsCompassRotationEnabled.Checked = saveData.Context.UiState.HasFlag(UiState.IsCompassRotationEnabled);
+            this.cb_UI_DoesGameHaveFocus.Checked = saveData.Context.UiState.HasFlag(UiState.DoesGameHaveFocus);
+            this.cb_UI_IsCompetitiveMode.Checked = saveData.Context.UiState.HasFlag(UiState.IsCompetitiveMode);
+            this.cb_UI_DoesAnyInputHaveFocus.Checked = saveData.Context.UiState.HasFlag(UiState.DoesAnyInputHaveFocus);
+            this.cb_UI_IsInCombat.Checked = saveData.Context.UiState.HasFlag(UiState.IsInCombat);
+
+            this.tb_UI_CompassWidth.Text = saveData.Context.CompassWidth.ToString();
+            this.tb_UI_CompassHeight.Text = saveData.Context.CompassHeight.ToString();
+            this.tb_UI_CompassRotation.Text = saveData.Context.CompassRotation.ToString();
+
+            this.tb_Map_PlayerX.Text = saveData.Context.PlayerPosition.X.ToString();
+            this.tb_Map_PlayerY.Text = saveData.Context.PlayerPosition.Y.ToString();
+
+            this.tb_Map_CenterX.Text = saveData.Context.MapCenter.X.ToString();
+            this.tb_Map_CenterY.Text = saveData.Context.MapCenter.Y.ToString();
+            this.tb_Map_Scale.Text = saveData.Context.MapScale.ToString();
+
+            this.cb_Map_ID.SelectedItem = saveData.Context.MapId;
+            this.cb_Map_Type.SelectedItem = saveData.Context.MapType;
+
+            this.cb_Identity_Mount.SelectedItem = saveData.Context.Mount;
+        }
+    }
+
+    private void GetSaveData()
+    {
+        var saveData = new SaveData();
+    }
+
+    private JsonSerializerSettings GetJsonSerializerSettings()
+    {
+        var settings = new JsonSerializerSettings()
+        {
+            Formatting = Formatting.Indented,
+        };
+
+        settings.Converters.Add(new StringEnumConverter());
+
+        return settings;
     }
 }

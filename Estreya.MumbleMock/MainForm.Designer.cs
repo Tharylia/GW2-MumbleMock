@@ -71,6 +71,7 @@ partial class MainForm
         lbl_Identity_Name = new Label();
         tb_Identity_Name = new TextBox();
         gb_Status = new GroupBox();
+        btn_RecreateMemoryMap = new Button();
         btn_Start = new Button();
         btn_Stop = new Button();
         cb_Log_LogMumbleUpdated = new CheckBox();
@@ -116,6 +117,10 @@ partial class MainForm
         cb_UI_IsCompassTopRight = new CheckBox();
         cb_UI_IsCompassRotationEnabled = new CheckBox();
         cb_UI_IsMapOpen = new CheckBox();
+        ms_Menu = new MenuStrip();
+        msi_File = new ToolStripMenuItem();
+        tsmi_Export = new ToolStripMenuItem();
+        tsmi_Import = new ToolStripMenuItem();
         gb_AvatarPosition.SuspendLayout();
         gb_AvatarFront.SuspendLayout();
         gb_CameraFront.SuspendLayout();
@@ -125,6 +130,7 @@ partial class MainForm
         gb_MapAndWorld.SuspendLayout();
         gb_Game.SuspendLayout();
         gb_UI.SuspendLayout();
+        ms_Menu.SuspendLayout();
         this.SuspendLayout();
         // 
         // MumbleUpdate_timer
@@ -139,7 +145,7 @@ partial class MainForm
         gb_AvatarPosition.Controls.Add(tb_AvatarPosition_Y);
         gb_AvatarPosition.Controls.Add(lbl_AvatarPosition_X);
         gb_AvatarPosition.Controls.Add(tb_AvatarPosition_X);
-        gb_AvatarPosition.Location = new Point(12, 12);
+        gb_AvatarPosition.Location = new Point(12, 27);
         gb_AvatarPosition.Name = "gb_AvatarPosition";
         gb_AvatarPosition.Size = new Size(248, 112);
         gb_AvatarPosition.TabIndex = 0;
@@ -205,7 +211,7 @@ partial class MainForm
         gb_AvatarFront.Controls.Add(tb_AvatarFront_Y);
         gb_AvatarFront.Controls.Add(lbl_AvatarFront_X);
         gb_AvatarFront.Controls.Add(tb_AvatarFront_X);
-        gb_AvatarFront.Location = new Point(266, 12);
+        gb_AvatarFront.Location = new Point(266, 27);
         gb_AvatarFront.Name = "gb_AvatarFront";
         gb_AvatarFront.Size = new Size(248, 112);
         gb_AvatarFront.TabIndex = 6;
@@ -271,7 +277,7 @@ partial class MainForm
         gb_CameraFront.Controls.Add(tb_CameraFront_Y);
         gb_CameraFront.Controls.Add(lbl_CameraFront_X);
         gb_CameraFront.Controls.Add(tb_CameraFront_X);
-        gb_CameraFront.Location = new Point(774, 12);
+        gb_CameraFront.Location = new Point(774, 27);
         gb_CameraFront.Name = "gb_CameraFront";
         gb_CameraFront.Size = new Size(248, 112);
         gb_CameraFront.TabIndex = 8;
@@ -337,7 +343,7 @@ partial class MainForm
         gb_CameraPosition.Controls.Add(tb_CameraPosition_Y);
         gb_CameraPosition.Controls.Add(lbl_CameraPosition_X);
         gb_CameraPosition.Controls.Add(tb_CameraPosition_X);
-        gb_CameraPosition.Location = new Point(520, 12);
+        gb_CameraPosition.Location = new Point(520, 27);
         gb_CameraPosition.Name = "gb_CameraPosition";
         gb_CameraPosition.Size = new Size(248, 112);
         gb_CameraPosition.TabIndex = 7;
@@ -408,7 +414,7 @@ partial class MainForm
         gb_Identity.Controls.Add(lbl_Identity_Race);
         gb_Identity.Controls.Add(lbl_Identity_Name);
         gb_Identity.Controls.Add(tb_Identity_Name);
-        gb_Identity.Location = new Point(12, 130);
+        gb_Identity.Location = new Point(12, 145);
         gb_Identity.Name = "gb_Identity";
         gb_Identity.Size = new Size(502, 190);
         gb_Identity.TabIndex = 6;
@@ -515,17 +521,29 @@ partial class MainForm
         // 
         // gb_Status
         // 
+        gb_Status.Controls.Add(btn_RecreateMemoryMap);
         gb_Status.Controls.Add(btn_Start);
         gb_Status.Controls.Add(btn_Stop);
         gb_Status.Controls.Add(cb_Log_LogMumbleUpdated);
         gb_Status.Controls.Add(rtb_Log);
         gb_Status.Dock = DockStyle.Bottom;
-        gb_Status.Location = new Point(0, 574);
+        gb_Status.Location = new Point(0, 636);
         gb_Status.Name = "gb_Status";
         gb_Status.Size = new Size(1034, 157);
         gb_Status.TabIndex = 7;
         gb_Status.TabStop = false;
         gb_Status.Text = "Status";
+        // 
+        // btn_RecreateMemoryMap
+        // 
+        btn_RecreateMemoryMap.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+        btn_RecreateMemoryMap.Location = new Point(727, 18);
+        btn_RecreateMemoryMap.Name = "btn_RecreateMemoryMap";
+        btn_RecreateMemoryMap.Size = new Size(139, 23);
+        btn_RecreateMemoryMap.TabIndex = 4;
+        btn_RecreateMemoryMap.Text = "Recreate Memory Map";
+        btn_RecreateMemoryMap.UseVisualStyleBackColor = true;
+        btn_RecreateMemoryMap.Click += this.btn_RecreateMemoryMap_Click;
         // 
         // btn_Start
         // 
@@ -588,7 +606,7 @@ partial class MainForm
         gb_MapAndWorld.Controls.Add(cb_Map_Type);
         gb_MapAndWorld.Controls.Add(lbl_Map_Type);
         gb_MapAndWorld.Controls.Add(lbl_Map_ID);
-        gb_MapAndWorld.Location = new Point(520, 130);
+        gb_MapAndWorld.Location = new Point(520, 145);
         gb_MapAndWorld.Name = "gb_MapAndWorld";
         gb_MapAndWorld.Size = new Size(502, 265);
         gb_MapAndWorld.TabIndex = 11;
@@ -659,7 +677,6 @@ partial class MainForm
         // 
         cb_World_ID.DropDownStyle = ComboBoxStyle.DropDownList;
         cb_World_ID.FormattingEnabled = true;
-        cb_World_ID.Items.AddRange(new object[] { "" });
         cb_World_ID.Location = new Point(94, 80);
         cb_World_ID.Name = "cb_World_ID";
         cb_World_ID.Size = new Size(402, 23);
@@ -695,7 +712,6 @@ partial class MainForm
         // 
         cb_Map_ID.DropDownStyle = ComboBoxStyle.DropDownList;
         cb_Map_ID.FormattingEnabled = true;
-        cb_Map_ID.Items.AddRange(new object[] { "" });
         cb_Map_ID.Location = new Point(94, 22);
         cb_Map_ID.Name = "cb_Map_ID";
         cb_Map_ID.Size = new Size(402, 23);
@@ -713,7 +729,6 @@ partial class MainForm
         // 
         cb_Map_Type.DropDownStyle = ComboBoxStyle.DropDownList;
         cb_Map_Type.FormattingEnabled = true;
-        cb_Map_Type.Items.AddRange(new object[] { "" });
         cb_Map_Type.Location = new Point(94, 51);
         cb_Map_Type.Name = "cb_Map_Type";
         cb_Map_Type.Size = new Size(402, 23);
@@ -744,7 +759,7 @@ partial class MainForm
         gb_Game.Controls.Add(tb_Game_BuildId);
         gb_Game.Controls.Add(lbl_Game_ProcessId);
         gb_Game.Controls.Add(lbl_Game_BuildId);
-        gb_Game.Location = new Point(520, 401);
+        gb_Game.Location = new Point(520, 416);
         gb_Game.Name = "gb_Game";
         gb_Game.Size = new Size(502, 83);
         gb_Game.TabIndex = 14;
@@ -813,7 +828,7 @@ partial class MainForm
         gb_UI.Controls.Add(cb_UI_IsCompassTopRight);
         gb_UI.Controls.Add(cb_UI_IsCompassRotationEnabled);
         gb_UI.Controls.Add(cb_UI_IsMapOpen);
-        gb_UI.Location = new Point(12, 326);
+        gb_UI.Location = new Point(12, 341);
         gb_UI.Name = "gb_UI";
         gb_UI.Size = new Size(502, 245);
         gb_UI.TabIndex = 16;
@@ -978,11 +993,40 @@ partial class MainForm
         cb_UI_IsMapOpen.Text = "Is Map Open";
         cb_UI_IsMapOpen.UseVisualStyleBackColor = true;
         // 
+        // ms_Menu
+        // 
+        ms_Menu.Items.AddRange(new ToolStripItem[] { msi_File });
+        ms_Menu.Location = new Point(0, 0);
+        ms_Menu.Name = "ms_Menu";
+        ms_Menu.Size = new Size(1034, 24);
+        ms_Menu.TabIndex = 17;
+        // 
+        // msi_File
+        // 
+        msi_File.DropDownItems.AddRange(new ToolStripItem[] { tsmi_Export, tsmi_Import });
+        msi_File.Name = "msi_File";
+        msi_File.Size = new Size(37, 20);
+        msi_File.Text = "File";
+        // 
+        // tsmi_Export
+        // 
+        tsmi_Export.Name = "tsmi_Export";
+        tsmi_Export.Size = new Size(180, 22);
+        tsmi_Export.Text = "Export";
+        tsmi_Export.Click += this.tsmi_Export_Click;
+        // 
+        // tsmi_Import
+        // 
+        tsmi_Import.Name = "tsmi_Import";
+        tsmi_Import.Size = new Size(180, 22);
+        tsmi_Import.Text = "Import";
+        tsmi_Import.Click += this.tsmi_Import_Click;
+        // 
         // MainForm
         // 
         this.AutoScaleDimensions = new SizeF(7F, 15F);
         this.AutoScaleMode = AutoScaleMode.Font;
-        this.ClientSize = new Size(1034, 731);
+        this.ClientSize = new Size(1034, 793);
         this.Controls.Add(gb_UI);
         this.Controls.Add(gb_Game);
         this.Controls.Add(gb_MapAndWorld);
@@ -992,6 +1036,8 @@ partial class MainForm
         this.Controls.Add(gb_CameraPosition);
         this.Controls.Add(gb_AvatarFront);
         this.Controls.Add(gb_AvatarPosition);
+        this.Controls.Add(ms_Menu);
+        this.MainMenuStrip = ms_Menu;
         this.MinimumSize = new Size(1050, 489);
         this.Name = "MainForm";
         this.Text = "MumbleMock";
@@ -1013,7 +1059,10 @@ partial class MainForm
         gb_Game.PerformLayout();
         gb_UI.ResumeLayout(false);
         gb_UI.PerformLayout();
+        ms_Menu.ResumeLayout(false);
+        ms_Menu.PerformLayout();
         this.ResumeLayout(false);
+        this.PerformLayout();
     }
 
     #endregion
@@ -1105,4 +1154,9 @@ partial class MainForm
     private TextBox tb_UI_CompassHeight;
     private Label lbl_UI_CompassWidth;
     private TextBox tb_UI_CompassWidth;
+    private Button btn_RecreateMemoryMap;
+    private MenuStrip ms_Menu;
+    private ToolStripMenuItem msi_File;
+    private ToolStripMenuItem tsmi_Export;
+    private ToolStripMenuItem tsmi_Import;
 }
