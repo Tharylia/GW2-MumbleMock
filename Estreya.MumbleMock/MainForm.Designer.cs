@@ -76,9 +76,19 @@ partial class MainForm
         cb_Log_LogMumbleUpdated = new CheckBox();
         rtb_Log = new RichTextBox();
         gb_MapAndWorld = new GroupBox();
+        lbl_Map_Scale = new Label();
+        tb_Map_Scale = new TextBox();
+        lbl_Map_CenterY = new Label();
+        tb_Map_CenterY = new TextBox();
+        lbl_Map_CenterX = new Label();
+        tb_Map_CenterX = new TextBox();
+        lbl_Map_PlayerY = new Label();
         cb_World_ID = new ComboBox();
+        tb_Map_PlayerY = new TextBox();
         lbl_World_Id = new Label();
+        lbl_Map_PlayerX = new Label();
         cb_Map_ID = new ComboBox();
+        tb_Map_PlayerX = new TextBox();
         cb_Map_Type = new ComboBox();
         lbl_Map_Type = new Label();
         lbl_Map_ID = new Label();
@@ -89,8 +99,14 @@ partial class MainForm
         lbl_Game_ProcessId = new Label();
         lbl_Game_BuildId = new Label();
         gb_UI = new GroupBox();
+        lbl_UI_CompassRotation = new Label();
+        tb_UI_CompassRotation = new TextBox();
+        lbl_UI_CompassHeight = new Label();
         cb_UI_Scale = new ComboBox();
+        tb_UI_CompassHeight = new TextBox();
         lbl_UI_Scale = new Label();
+        lbl_UI_CompassWidth = new Label();
+        tb_UI_CompassWidth = new TextBox();
         lbl_UI_FOV = new Label();
         cb_UI_IsInCombat = new CheckBox();
         tb_UI_FOV = new TextBox();
@@ -504,7 +520,7 @@ partial class MainForm
         gb_Status.Controls.Add(cb_Log_LogMumbleUpdated);
         gb_Status.Controls.Add(rtb_Log);
         gb_Status.Dock = DockStyle.Bottom;
-        gb_Status.Location = new Point(0, 483);
+        gb_Status.Location = new Point(0, 574);
         gb_Status.Name = "gb_Status";
         gb_Status.Size = new Size(1034, 157);
         gb_Status.TabIndex = 7;
@@ -513,6 +529,7 @@ partial class MainForm
         // 
         // btn_Start
         // 
+        btn_Start.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
         btn_Start.Location = new Point(872, 18);
         btn_Start.Name = "btn_Start";
         btn_Start.Size = new Size(75, 23);
@@ -523,6 +540,7 @@ partial class MainForm
         // 
         // btn_Stop
         // 
+        btn_Stop.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
         btn_Stop.Enabled = false;
         btn_Stop.Location = new Point(953, 18);
         btn_Stop.Name = "btn_Stop";
@@ -554,28 +572,106 @@ partial class MainForm
         // 
         // gb_MapAndWorld
         // 
+        gb_MapAndWorld.Controls.Add(lbl_Map_Scale);
+        gb_MapAndWorld.Controls.Add(tb_Map_Scale);
+        gb_MapAndWorld.Controls.Add(lbl_Map_CenterY);
+        gb_MapAndWorld.Controls.Add(tb_Map_CenterY);
+        gb_MapAndWorld.Controls.Add(lbl_Map_CenterX);
+        gb_MapAndWorld.Controls.Add(tb_Map_CenterX);
+        gb_MapAndWorld.Controls.Add(lbl_Map_PlayerY);
         gb_MapAndWorld.Controls.Add(cb_World_ID);
+        gb_MapAndWorld.Controls.Add(tb_Map_PlayerY);
         gb_MapAndWorld.Controls.Add(lbl_World_Id);
+        gb_MapAndWorld.Controls.Add(lbl_Map_PlayerX);
         gb_MapAndWorld.Controls.Add(cb_Map_ID);
+        gb_MapAndWorld.Controls.Add(tb_Map_PlayerX);
         gb_MapAndWorld.Controls.Add(cb_Map_Type);
         gb_MapAndWorld.Controls.Add(lbl_Map_Type);
         gb_MapAndWorld.Controls.Add(lbl_Map_ID);
         gb_MapAndWorld.Location = new Point(520, 130);
         gb_MapAndWorld.Name = "gb_MapAndWorld";
-        gb_MapAndWorld.Size = new Size(502, 114);
+        gb_MapAndWorld.Size = new Size(502, 265);
         gb_MapAndWorld.TabIndex = 11;
         gb_MapAndWorld.TabStop = false;
         gb_MapAndWorld.Text = "Map / World";
+        // 
+        // lbl_Map_Scale
+        // 
+        lbl_Map_Scale.AutoSize = true;
+        lbl_Map_Scale.Location = new Point(6, 228);
+        lbl_Map_Scale.Name = "lbl_Map_Scale";
+        lbl_Map_Scale.Size = new Size(64, 15);
+        lbl_Map_Scale.TabIndex = 19;
+        lbl_Map_Scale.Text = "Map Scale:";
+        // 
+        // tb_Map_Scale
+        // 
+        tb_Map_Scale.Location = new Point(94, 225);
+        tb_Map_Scale.Name = "tb_Map_Scale";
+        tb_Map_Scale.Size = new Size(402, 23);
+        tb_Map_Scale.TabIndex = 18;
+        tb_Map_Scale.Text = "0";
+        // 
+        // lbl_Map_CenterY
+        // 
+        lbl_Map_CenterY.AutoSize = true;
+        lbl_Map_CenterY.Location = new Point(6, 199);
+        lbl_Map_CenterY.Name = "lbl_Map_CenterY";
+        lbl_Map_CenterY.Size = new Size(82, 15);
+        lbl_Map_CenterY.TabIndex = 17;
+        lbl_Map_CenterY.Text = "Map Center Y:";
+        // 
+        // tb_Map_CenterY
+        // 
+        tb_Map_CenterY.Location = new Point(94, 196);
+        tb_Map_CenterY.Name = "tb_Map_CenterY";
+        tb_Map_CenterY.Size = new Size(402, 23);
+        tb_Map_CenterY.TabIndex = 16;
+        tb_Map_CenterY.Text = "0";
+        // 
+        // lbl_Map_CenterX
+        // 
+        lbl_Map_CenterX.AutoSize = true;
+        lbl_Map_CenterX.Location = new Point(6, 170);
+        lbl_Map_CenterX.Name = "lbl_Map_CenterX";
+        lbl_Map_CenterX.Size = new Size(82, 15);
+        lbl_Map_CenterX.TabIndex = 15;
+        lbl_Map_CenterX.Text = "Map Center X:";
+        // 
+        // tb_Map_CenterX
+        // 
+        tb_Map_CenterX.Location = new Point(94, 167);
+        tb_Map_CenterX.Name = "tb_Map_CenterX";
+        tb_Map_CenterX.Size = new Size(402, 23);
+        tb_Map_CenterX.TabIndex = 14;
+        tb_Map_CenterX.Text = "0";
+        // 
+        // lbl_Map_PlayerY
+        // 
+        lbl_Map_PlayerY.AutoSize = true;
+        lbl_Map_PlayerY.Location = new Point(6, 141);
+        lbl_Map_PlayerY.Name = "lbl_Map_PlayerY";
+        lbl_Map_PlayerY.Size = new Size(52, 15);
+        lbl_Map_PlayerY.TabIndex = 9;
+        lbl_Map_PlayerY.Text = "Player Y:";
         // 
         // cb_World_ID
         // 
         cb_World_ID.DropDownStyle = ComboBoxStyle.DropDownList;
         cb_World_ID.FormattingEnabled = true;
         cb_World_ID.Items.AddRange(new object[] { "" });
-        cb_World_ID.Location = new Point(77, 80);
+        cb_World_ID.Location = new Point(94, 80);
         cb_World_ID.Name = "cb_World_ID";
-        cb_World_ID.Size = new Size(419, 23);
+        cb_World_ID.Size = new Size(402, 23);
         cb_World_ID.TabIndex = 13;
+        // 
+        // tb_Map_PlayerY
+        // 
+        tb_Map_PlayerY.Location = new Point(94, 138);
+        tb_Map_PlayerY.Name = "tb_Map_PlayerY";
+        tb_Map_PlayerY.Size = new Size(402, 23);
+        tb_Map_PlayerY.TabIndex = 8;
+        tb_Map_PlayerY.Text = "0";
         // 
         // lbl_World_Id
         // 
@@ -586,24 +682,41 @@ partial class MainForm
         lbl_World_Id.TabIndex = 10;
         lbl_World_Id.Text = "World ID:";
         // 
+        // lbl_Map_PlayerX
+        // 
+        lbl_Map_PlayerX.AutoSize = true;
+        lbl_Map_PlayerX.Location = new Point(6, 112);
+        lbl_Map_PlayerX.Name = "lbl_Map_PlayerX";
+        lbl_Map_PlayerX.Size = new Size(52, 15);
+        lbl_Map_PlayerX.TabIndex = 7;
+        lbl_Map_PlayerX.Text = "Player X:";
+        // 
         // cb_Map_ID
         // 
         cb_Map_ID.DropDownStyle = ComboBoxStyle.DropDownList;
         cb_Map_ID.FormattingEnabled = true;
         cb_Map_ID.Items.AddRange(new object[] { "" });
-        cb_Map_ID.Location = new Point(77, 22);
+        cb_Map_ID.Location = new Point(94, 22);
         cb_Map_ID.Name = "cb_Map_ID";
-        cb_Map_ID.Size = new Size(419, 23);
+        cb_Map_ID.Size = new Size(402, 23);
         cb_Map_ID.TabIndex = 9;
+        // 
+        // tb_Map_PlayerX
+        // 
+        tb_Map_PlayerX.Location = new Point(94, 109);
+        tb_Map_PlayerX.Name = "tb_Map_PlayerX";
+        tb_Map_PlayerX.Size = new Size(402, 23);
+        tb_Map_PlayerX.TabIndex = 6;
+        tb_Map_PlayerX.Text = "0";
         // 
         // cb_Map_Type
         // 
         cb_Map_Type.DropDownStyle = ComboBoxStyle.DropDownList;
         cb_Map_Type.FormattingEnabled = true;
         cb_Map_Type.Items.AddRange(new object[] { "" });
-        cb_Map_Type.Location = new Point(77, 51);
+        cb_Map_Type.Location = new Point(94, 51);
         cb_Map_Type.Name = "cb_Map_Type";
-        cb_Map_Type.Size = new Size(419, 23);
+        cb_Map_Type.Size = new Size(402, 23);
         cb_Map_Type.TabIndex = 8;
         // 
         // lbl_Map_Type
@@ -631,7 +744,7 @@ partial class MainForm
         gb_Game.Controls.Add(tb_Game_BuildId);
         gb_Game.Controls.Add(lbl_Game_ProcessId);
         gb_Game.Controls.Add(lbl_Game_BuildId);
-        gb_Game.Location = new Point(12, 349);
+        gb_Game.Location = new Point(520, 401);
         gb_Game.Name = "gb_Game";
         gb_Game.Size = new Size(502, 83);
         gb_Game.TabIndex = 14;
@@ -683,8 +796,14 @@ partial class MainForm
         // 
         // gb_UI
         // 
+        gb_UI.Controls.Add(lbl_UI_CompassRotation);
+        gb_UI.Controls.Add(tb_UI_CompassRotation);
+        gb_UI.Controls.Add(lbl_UI_CompassHeight);
         gb_UI.Controls.Add(cb_UI_Scale);
+        gb_UI.Controls.Add(tb_UI_CompassHeight);
         gb_UI.Controls.Add(lbl_UI_Scale);
+        gb_UI.Controls.Add(lbl_UI_CompassWidth);
+        gb_UI.Controls.Add(tb_UI_CompassWidth);
         gb_UI.Controls.Add(lbl_UI_FOV);
         gb_UI.Controls.Add(cb_UI_IsInCombat);
         gb_UI.Controls.Add(tb_UI_FOV);
@@ -694,22 +813,56 @@ partial class MainForm
         gb_UI.Controls.Add(cb_UI_IsCompassTopRight);
         gb_UI.Controls.Add(cb_UI_IsCompassRotationEnabled);
         gb_UI.Controls.Add(cb_UI_IsMapOpen);
-        gb_UI.Location = new Point(520, 250);
+        gb_UI.Location = new Point(12, 326);
         gb_UI.Name = "gb_UI";
-        gb_UI.Size = new Size(502, 158);
+        gb_UI.Size = new Size(502, 245);
         gb_UI.TabIndex = 16;
         gb_UI.TabStop = false;
         gb_UI.Text = "UI";
+        // 
+        // lbl_UI_CompassRotation
+        // 
+        lbl_UI_CompassRotation.AutoSize = true;
+        lbl_UI_CompassRotation.Location = new Point(6, 216);
+        lbl_UI_CompassRotation.Name = "lbl_UI_CompassRotation";
+        lbl_UI_CompassRotation.Size = new Size(107, 15);
+        lbl_UI_CompassRotation.TabIndex = 25;
+        lbl_UI_CompassRotation.Text = "Compass Rotation:";
+        // 
+        // tb_UI_CompassRotation
+        // 
+        tb_UI_CompassRotation.Location = new Point(119, 213);
+        tb_UI_CompassRotation.Name = "tb_UI_CompassRotation";
+        tb_UI_CompassRotation.Size = new Size(377, 23);
+        tb_UI_CompassRotation.TabIndex = 24;
+        tb_UI_CompassRotation.Text = "0";
+        // 
+        // lbl_UI_CompassHeight
+        // 
+        lbl_UI_CompassHeight.AutoSize = true;
+        lbl_UI_CompassHeight.Location = new Point(6, 187);
+        lbl_UI_CompassHeight.Name = "lbl_UI_CompassHeight";
+        lbl_UI_CompassHeight.Size = new Size(98, 15);
+        lbl_UI_CompassHeight.TabIndex = 23;
+        lbl_UI_CompassHeight.Text = "Compass Height:";
         // 
         // cb_UI_Scale
         // 
         cb_UI_Scale.DropDownStyle = ComboBoxStyle.DropDownList;
         cb_UI_Scale.FormattingEnabled = true;
         cb_UI_Scale.Items.AddRange(new object[] { "Small", "Normal", "Large", "Larger" });
-        cb_UI_Scale.Location = new Point(89, 126);
+        cb_UI_Scale.Location = new Point(119, 126);
         cb_UI_Scale.Name = "cb_UI_Scale";
-        cb_UI_Scale.Size = new Size(407, 23);
+        cb_UI_Scale.Size = new Size(377, 23);
         cb_UI_Scale.TabIndex = 15;
+        // 
+        // tb_UI_CompassHeight
+        // 
+        tb_UI_CompassHeight.Location = new Point(119, 184);
+        tb_UI_CompassHeight.Name = "tb_UI_CompassHeight";
+        tb_UI_CompassHeight.Size = new Size(377, 23);
+        tb_UI_CompassHeight.TabIndex = 22;
+        tb_UI_CompassHeight.Text = "0";
         // 
         // lbl_UI_Scale
         // 
@@ -719,6 +872,23 @@ partial class MainForm
         lbl_UI_Scale.Size = new Size(44, 15);
         lbl_UI_Scale.TabIndex = 14;
         lbl_UI_Scale.Text = "UI Size:";
+        // 
+        // lbl_UI_CompassWidth
+        // 
+        lbl_UI_CompassWidth.AutoSize = true;
+        lbl_UI_CompassWidth.Location = new Point(6, 158);
+        lbl_UI_CompassWidth.Name = "lbl_UI_CompassWidth";
+        lbl_UI_CompassWidth.Size = new Size(94, 15);
+        lbl_UI_CompassWidth.TabIndex = 21;
+        lbl_UI_CompassWidth.Text = "Compass Width:";
+        // 
+        // tb_UI_CompassWidth
+        // 
+        tb_UI_CompassWidth.Location = new Point(119, 155);
+        tb_UI_CompassWidth.Name = "tb_UI_CompassWidth";
+        tb_UI_CompassWidth.Size = new Size(377, 23);
+        tb_UI_CompassWidth.TabIndex = 20;
+        tb_UI_CompassWidth.Text = "0";
         // 
         // lbl_UI_FOV
         // 
@@ -741,9 +911,9 @@ partial class MainForm
         // 
         // tb_UI_FOV
         // 
-        tb_UI_FOV.Location = new Point(89, 97);
+        tb_UI_FOV.Location = new Point(119, 97);
         tb_UI_FOV.Name = "tb_UI_FOV";
-        tb_UI_FOV.Size = new Size(407, 23);
+        tb_UI_FOV.Size = new Size(377, 23);
         tb_UI_FOV.TabIndex = 6;
         tb_UI_FOV.Text = "0.873";
         // 
@@ -796,6 +966,7 @@ partial class MainForm
         cb_UI_IsCompassRotationEnabled.TabIndex = 17;
         cb_UI_IsCompassRotationEnabled.Text = "Is Compass Rotation Enabled";
         cb_UI_IsCompassRotationEnabled.UseVisualStyleBackColor = true;
+        cb_UI_IsCompassRotationEnabled.CheckedChanged += this.cb_UI_IsCompassRotationEnabled_CheckedChanged;
         // 
         // cb_UI_IsMapOpen
         // 
@@ -811,7 +982,7 @@ partial class MainForm
         // 
         this.AutoScaleDimensions = new SizeF(7F, 15F);
         this.AutoScaleMode = AutoScaleMode.Font;
-        this.ClientSize = new Size(1034, 640);
+        this.ClientSize = new Size(1034, 731);
         this.Controls.Add(gb_UI);
         this.Controls.Add(gb_Game);
         this.Controls.Add(gb_MapAndWorld);
@@ -865,7 +1036,7 @@ partial class MainForm
     private GroupBox gb_Identity;
     private TextBox tb_UI_FOV;
     private Label lbl_World_Id;
-    private TextBox textBox2;
+    private TextBox tb_Map_PlayerX;
     private Label lbl_Identity_Name;
     private TextBox tb_Identity_Name;
     private GroupBox gb_CameraFront;
@@ -919,4 +1090,19 @@ partial class MainForm
     private Label lbl_UI_FOV;
     private ComboBox cb_UI_Scale;
     private Label lbl_UI_Scale;
+    private Label lbl_Map_PlayerY;
+    private TextBox tb_Map_PlayerY;
+    private Label lbl_Map_PlayerX;
+    private Label lbl_Map_CenterY;
+    private TextBox tb_Map_CenterY;
+    private Label lbl_Map_CenterX;
+    private TextBox tb_Map_CenterX;
+    private Label lbl_Map_Scale;
+    private TextBox tb_Map_Scale;
+    private Label lbl_UI_CompassRotation;
+    private TextBox tb_UI_CompassRotation;
+    private Label lbl_UI_CompassHeight;
+    private TextBox tb_UI_CompassHeight;
+    private Label lbl_UI_CompassWidth;
+    private TextBox tb_UI_CompassWidth;
 }

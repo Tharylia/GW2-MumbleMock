@@ -29,6 +29,7 @@ public partial class MainForm : Form
         this.FormClosed += this.MainForm_FormClosed;
         this.Load += this.MainForm_Load;
         this.cb_UI_Scale.SelectedIndex = 0;
+        this.tb_UI_CompassRotation.Enabled = this.cb_UI_IsCompassRotationEnabled.Checked;
 
         this._logger = new Logger(this.rtb_Log);
 
@@ -154,19 +155,19 @@ public partial class MainForm : Form
         }
 
         mem.context.mapId = this.GetMap();
-        mem.context.mapType = 0;
+        mem.context.mapType = this.GetMapType();
         mem.context.shardId = 0;
         mem.context.instance = 0;
         mem.context.buildId = string.IsNullOrWhiteSpace(this.tb_Game_BuildId.Text) ? 0 : Convert.ToUInt32(this.tb_Game_BuildId.Text);
         mem.context.uiState = this.GetUIState();
-        mem.context.compassWidth = 0;
-        mem.context.compassHeight = 0;
-        mem.context.compassRotation = 0;
-        mem.context.playerMapX = 0;
-        mem.context.playerMapY = 0;
-        mem.context.mapCenterX = 0;
-        mem.context.mapCenterY = 0;
-        mem.context.mapScale = 0;
+        mem.context.compassWidth = string.IsNullOrWhiteSpace(this.tb_UI_CompassWidth.Text) ? (ushort)0 : ushort.Parse(this.tb_UI_CompassWidth.Text, CultureInfo.InvariantCulture);
+        mem.context.compassHeight = string.IsNullOrWhiteSpace(this.tb_UI_CompassHeight.Text) ? (ushort)0 : ushort.Parse(this.tb_UI_CompassHeight.Text, CultureInfo.InvariantCulture);
+        mem.context.compassRotation = !this.cb_UI_IsCompassRotationEnabled.Checked || string.IsNullOrWhiteSpace(this.tb_UI_CompassRotation.Text) ? (ushort)0 : ushort.Parse(this.tb_UI_CompassRotation.Text, CultureInfo.InvariantCulture);
+        mem.context.playerMapX = string.IsNullOrWhiteSpace(this.tb_Map_PlayerX.Text) ? 0 : float.Parse(this.tb_Map_PlayerX.Text, CultureInfo.InvariantCulture);
+        mem.context.playerMapY = string.IsNullOrWhiteSpace(this.tb_Map_PlayerY.Text) ? 0 : float.Parse(this.tb_Map_PlayerY.Text, CultureInfo.InvariantCulture);
+        mem.context.mapCenterX = string.IsNullOrWhiteSpace(this.tb_Map_CenterX.Text) ? 0 : float.Parse(this.tb_Map_CenterX.Text, CultureInfo.InvariantCulture);
+        mem.context.mapCenterY = string.IsNullOrWhiteSpace(this.tb_Map_CenterY.Text) ? 0 : float.Parse(this.tb_Map_CenterY.Text, CultureInfo.InvariantCulture);
+        mem.context.mapScale = string.IsNullOrWhiteSpace(this.tb_Map_Scale.Text) ? 0 : float.Parse(this.tb_Map_Scale.Text, CultureInfo.InvariantCulture);
         mem.context.processId = (uint)(this._selectedProcess?.Id ?? 0);
         mem.context.mount = (Gw2Sharp.Models.MountType)this.GetMount();
 
@@ -232,6 +233,25 @@ public partial class MainForm : Form
             "large" => 2,
             "larger" => 3,
             _ => throw new ArgumentException($"Invalid ui scale."),
+        };
+    }
+
+    private uint GetMapType()
+    {
+        return (this.cb_Map_Type.SelectedItem?.ToString()?.ToLowerInvariant()) switch
+        {
+            null or "" => 9,
+            "public" => 5,
+            "instance" => 4,
+            "center" => 9,
+            "bluehome" => 10,
+            "greenhome" => 11,
+            "redhome" => 12,
+            "tutorial" => 7,
+            "pvp" => 2,
+            "jumppuzzle" => 14,
+            "edgeofthemists" => 15,
+            _ => 99//throw new ArgumentException($"Invalid ui scale."),
         };
     }
 
@@ -333,13 +353,6 @@ public partial class MainForm : Form
 
     private void FillAPIValues()
     {
-        this.cb_Identity_Race.Items.Clear();
-        this.cb_Identity_Spec.Items.Clear();
-        this.cb_Map_ID.Items.Clear();
-        this.cb_Map_Type.Items.Clear();
-        this.cb_World_ID.Items.Clear();
-        this.cb_Identity_Mount.Items.Clear();
-
         if (this._races is not null)
         {
             this.cb_Identity_Race.Items.AddRange(this._races.Select(x => x.Name).ToArray());
@@ -387,5 +400,10 @@ public partial class MainForm : Form
                 this.lbl_Game_ProcessId_Value.Text = $"{this._selectedProcess.ProcessName} - {this._selectedProcess.Id}";
             }
         }
+    }
+
+    private void cb_UI_IsCompassRotationEnabled_CheckedChanged(object sender, EventArgs e)
+    {
+        this.tb_UI_CompassRotation.Enabled = this.cb_UI_IsCompassRotationEnabled.Checked;
     }
 }
