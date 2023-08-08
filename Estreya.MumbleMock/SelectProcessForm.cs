@@ -41,7 +41,7 @@ public partial class SelectProcessForm : Form
     {
         try
         {
-            return process.MainModule?.FileVersionInfo.FileDescription; 
+            return process.MainModule?.FileVersionInfo.FileDescription;
         }
         catch (Exception)
         {

@@ -31,9 +31,9 @@ partial class SelectProcessForm
         lv_Processes = new ListView();
         name = new ColumnHeader();
         id = new ColumnHeader();
+        description = new ColumnHeader();
         btn_OK = new Button();
         btn_Cancel = new Button();
-        description = new ColumnHeader();
         this.SuspendLayout();
         // 
         // lv_Processes
@@ -56,6 +56,10 @@ partial class SelectProcessForm
         // 
         id.Text = "ID";
         // 
+        // description
+        // 
+        description.Text = "Description";
+        // 
         // btn_OK
         // 
         btn_OK.Location = new Point(713, 415);
@@ -76,10 +80,6 @@ partial class SelectProcessForm
         btn_Cancel.UseVisualStyleBackColor = true;
         btn_Cancel.Click += this.btn_Cancel_Click;
         // 
-        // description
-        // 
-        description.Text = "Description";
-        // 
         // SelectProcessForm
         // 
         this.AutoScaleDimensions = new SizeF(7F, 15F);
@@ -89,7 +89,7 @@ partial class SelectProcessForm
         this.Controls.Add(btn_OK);
         this.Controls.Add(lv_Processes);
         this.Name = "SelectProcessForm";
-        this.Text = "SelectProcessForm";
+        this.Text = "Select process...";
         this.ResumeLayout(false);
     }
 
