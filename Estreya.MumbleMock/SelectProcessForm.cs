@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Diagnostics;
 
 namespace Estreya.MumbleMock;
 public partial class SelectProcessForm : Form
@@ -16,7 +7,7 @@ public partial class SelectProcessForm : Form
 
     public SelectProcessForm()
     {
-        InitializeComponent();
+        this.InitializeComponent();
         this.Load += this.SelectProcessForm_Load;
         this.lv_Processes.Sorting = SortOrder.Ascending;
         this.lv_Processes.FullRowSelect = true;
@@ -28,8 +19,8 @@ public partial class SelectProcessForm : Form
         {
             ListViewItem item = new ListViewItem(process.ProcessName);
             item.SubItems.Add(new ListViewItem.ListViewSubItem(item, process.Id.ToString()));
-            item.SubItems.Add(new ListViewItem.ListViewSubItem(item, GetProcessDescription(process)));
-            lv_Processes.Items.Add(item);
+            item.SubItems.Add(new ListViewItem.ListViewSubItem(item, this.GetProcessDescription(process)));
+            this.lv_Processes.Items.Add(item);
         }
 
         this.lv_Processes.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -65,6 +56,6 @@ public partial class SelectProcessForm : Form
 
     private void SetProcess()
     {
-        this.SelectedProcess = lv_Processes.SelectedIndices.Count == 0 ? null : Process.GetProcessById(Convert.ToInt32(lv_Processes.SelectedItems[0].SubItems[1].Text));
+        this.SelectedProcess = this.lv_Processes.SelectedIndices.Count == 0 ? null : Process.GetProcessById(Convert.ToInt32(this.lv_Processes.SelectedItems[0].SubItems[1].Text));
     }
 }
