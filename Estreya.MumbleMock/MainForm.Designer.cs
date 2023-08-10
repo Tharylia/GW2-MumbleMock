@@ -71,7 +71,7 @@ partial class MainForm
         lbl_Identity_Name = new Label();
         tb_Identity_Name = new TextBox();
         gb_Status = new GroupBox();
-        btn_RecreateMemoryMap = new Button();
+        btn_ClearMemoryMap = new Button();
         btn_Start = new Button();
         btn_Stop = new Button();
         cb_Log_LogMumbleUpdated = new CheckBox();
@@ -521,7 +521,7 @@ partial class MainForm
         // 
         // gb_Status
         // 
-        gb_Status.Controls.Add(btn_RecreateMemoryMap);
+        gb_Status.Controls.Add(btn_ClearMemoryMap);
         gb_Status.Controls.Add(btn_Start);
         gb_Status.Controls.Add(btn_Stop);
         gb_Status.Controls.Add(cb_Log_LogMumbleUpdated);
@@ -534,16 +534,16 @@ partial class MainForm
         gb_Status.TabStop = false;
         gb_Status.Text = "Status";
         // 
-        // btn_RecreateMemoryMap
+        // btn_ClearMemoryMap
         // 
-        btn_RecreateMemoryMap.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-        btn_RecreateMemoryMap.Location = new Point(727, 18);
-        btn_RecreateMemoryMap.Name = "btn_RecreateMemoryMap";
-        btn_RecreateMemoryMap.Size = new Size(139, 23);
-        btn_RecreateMemoryMap.TabIndex = 4;
-        btn_RecreateMemoryMap.Text = "Recreate Memory Map";
-        btn_RecreateMemoryMap.UseVisualStyleBackColor = true;
-        btn_RecreateMemoryMap.Click += this.btn_RecreateMemoryMap_Click;
+        btn_ClearMemoryMap.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+        btn_ClearMemoryMap.Location = new Point(747, 18);
+        btn_ClearMemoryMap.Name = "btn_ClearMemoryMap";
+        btn_ClearMemoryMap.Size = new Size(119, 23);
+        btn_ClearMemoryMap.TabIndex = 1;
+        btn_ClearMemoryMap.Text = "Clear Memory Map";
+        btn_ClearMemoryMap.UseVisualStyleBackColor = true;
+        btn_ClearMemoryMap.Click += this.btn_ClearMemoryMap_Click;
         // 
         // btn_Start
         // 
@@ -1154,7 +1154,7 @@ partial class MainForm
     private TextBox tb_UI_CompassHeight;
     private Label lbl_UI_CompassWidth;
     private TextBox tb_UI_CompassWidth;
-    private Button btn_RecreateMemoryMap;
+    private Button btn_ClearMemoryMap;
     private MenuStrip ms_Menu;
     private ToolStripMenuItem msi_File;
     private ToolStripMenuItem tsmi_Export;

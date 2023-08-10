@@ -594,9 +594,16 @@ public partial class MainForm : Form
         this._logger.Info($"Memory Map \"{this._mumbleWriter.MumbleLinkName}\" connected.");
     }
 
-    private void btn_RecreateMemoryMap_Click(object sender, EventArgs e)
+    private void btn_ClearMemoryMap_Click(object sender, EventArgs e)
     {
-        this.CreateAndOpenMumbleWriter();
+        if (this._mumbleWriter is null)
+        {
+            this._logger.Warn("Writer is null.");
+            return;
+        }
+
+        this._mumbleWriter.Write(new Gw2LinkedMem());
+        this._logger.Info($"Memory Map \"{this._mumbleWriter.MumbleLinkName}\" cleared.");
     }
 
     private void tsmi_Export_Click(object sender, EventArgs e)
