@@ -550,7 +550,12 @@ public partial class MainForm : Form
         this._mountHandler.ComboBox.Items.Add(string.Empty);
         if (this._mounts is not null)
         {
-            this._mountHandler.ComboBox.Items.AddRange(this._mounts.Select(x => x.Name).ToArray());
+            var mounts = this._mounts.Select(x => x.Name).ToArray();
+            this._mountHandler.ComboBox.Items.AddRange(mounts);
+            if (!mounts.Contains("siege turtle"))
+            {
+                this._mountHandler.ComboBox.Items.Add("Siege Turtle");
+            }
         }
         else
         {
