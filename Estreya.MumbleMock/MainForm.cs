@@ -19,7 +19,7 @@ namespace Estreya.MumbleMock;
 public partial class MainForm : Form
 {
     private uint _uiTick = 0;
-    private Gw2MumbleClientWriter? _mumbleWriter;
+    private Gw2MumbleClientWriter _mumbleWriter;
     private Logger _logger;
     private List<Race>? _races;
     private List<Profession>? _professions;
@@ -577,6 +577,7 @@ public partial class MainForm : Form
         this.tb_UI_CompassRotation.Enabled = this.cb_UI_IsCompassRotationEnabled.Checked;
     }
 
+    [MemberNotNull(nameof(_mumbleWriter))]
     private void CreateAndOpenMumbleWriter()
     {
         if (this._mumbleWriter is not null)
