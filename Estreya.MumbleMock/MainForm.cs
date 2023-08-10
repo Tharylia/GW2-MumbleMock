@@ -44,17 +44,9 @@ public partial class MainForm : Form
 
     private async void MainForm_Load(object? sender, EventArgs e)
     {
-        try
-        {
             await this.LoadAPIValues();
             this.FillAPIValues();
         }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Error loading API values", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            Application.Exit();
-        }
-    }
 
     private void MainForm_FormClosed(object? sender, FormClosedEventArgs e)
     {
@@ -377,26 +369,82 @@ public partial class MainForm : Form
         Gw2Sharp.Connection connection = new Gw2Sharp.Connection();
         using Gw2Sharp.Gw2Client client = new Gw2Sharp.Gw2Client(connection);
 
-        Gw2Sharp.WebApi.V2.IApiV2ObjectList<Map> maps = await client.WebApi.V2.Maps.AllAsync();
-        this._maps = maps.ToList();
+        Task<Gw2Sharp.WebApi.V2.IApiV2ObjectList<Map>> mapsTask = client.WebApi.V2.Maps.AllAsync();
+        Task<Gw2Sharp.WebApi.V2.IApiV2ObjectList<Race>> racesTask = client.WebApi.V2.Races.AllAsync();
+        Task<Gw2Sharp.WebApi.V2.IApiV2ObjectList<Specialization>> specializationTask = client.WebApi.V2.Specializations.AllAsync();
+        Task<Gw2Sharp.WebApi.V2.IApiV2ObjectList<Profession>> professionsTask = client.WebApi.V2.Professions.AllAsync();
+        Task<Gw2Sharp.WebApi.V2.IApiV2ObjectList<World>> worldsTask = client.WebApi.V2.Worlds.AllAsync();
+        Task<Gw2Sharp.WebApi.V2.IApiV2ObjectList<MountType>> mountsTask = client.WebApi.V2.Mounts.Types.AllAsync();
+        Task<Build> buildIdTask = client.WebApi.V2.Build.GetAsync();
 
-        Gw2Sharp.WebApi.V2.IApiV2ObjectList<Race> races = await client.WebApi.V2.Races.AllAsync();
-        this._races = races.ToList();
+        try
+        {
+            await Task.WhenAll(mapsTask, racesTask, specializationTask, professionsTask, worldsTask, mountsTask, buildIdTask);
+        }
+        catch (Exception) { }
 
-        Gw2Sharp.WebApi.V2.IApiV2ObjectList<Specialization> specializations = await client.WebApi.V2.Specializations.AllAsync();
-        this._specializations = specializations.ToList();
+        if (mapsTask.IsCompletedSuccessfully)
+        {
+            this._maps = mapsTask.Result.ToList();
+        }
+        else
+        {
+            this._logger.Warn($"Failed to load maps from api: {mapsTask.Exception?.Message}");
+        }
 
-        Gw2Sharp.WebApi.V2.IApiV2ObjectList<Profession> professions = await client.WebApi.V2.Professions.AllAsync();
-        this._professions = professions.ToList();
+        if (racesTask.IsCompletedSuccessfully)
+        {
+            this._races = racesTask.Result.ToList();
+        }
+        else
+        {
+            this._logger.Warn($"Failed to load races from api: {racesTask.Exception?.Message}");
+        }
 
-        Gw2Sharp.WebApi.V2.IApiV2ObjectList<World> worlds = await client.WebApi.V2.Worlds.AllAsync();
-        this._worlds = worlds.ToList();
+        if (specializationTask.IsCompletedSuccessfully)
+        {
+            this._specializations = specializationTask.Result.ToList();
+        }
+        else
+        {
+            this._logger.Warn($"Failed to load maps from api: {specializationTask.Exception?.Message}");
+        }
 
-        Gw2Sharp.WebApi.V2.IApiV2ObjectList<MountType> mounts = await client.WebApi.V2.Mounts.Types.AllAsync();
-        this._mounts = mounts.ToList();
+        if (professionsTask.IsCompletedSuccessfully)
+        {
+            this._professions = professionsTask.Result.ToList();
+        }
+        else
+        {
+            this._logger.Warn($"Failed to load maps from api: {professionsTask.Exception?.Message}");
+        }
 
-        Build build = await client.WebApi.V2.Build.GetAsync();
-        this.tb_Game_BuildId.Text = build.Id.ToString();
+        if (worldsTask.IsCompletedSuccessfully)
+        {
+            this._worlds = worldsTask.Result.ToList();
+        }
+        else
+        {
+            this._logger.Warn($"Failed to load maps from api: {worldsTask.Exception?.Message}");
+        }
+
+        if (mountsTask.IsCompletedSuccessfully)
+        {
+            this._mounts = mountsTask.Result.ToList();
+        }
+        else
+        {
+            this._logger.Warn($"Failed to load maps from api: {mountsTask.Exception?.Message}");
+        }
+
+        if (buildIdTask.IsCompletedSuccessfully)
+        {
+            this.tb_Game_BuildId.Text = buildIdTask.Result?.Id.ToString();
+        }
+        else
+        {
+            this._logger.Warn($"Failed to load build id from api: {buildIdTask.Exception?.Message}");
+        }
 
         this._logger.Info("Loading API values finished.");
     }
