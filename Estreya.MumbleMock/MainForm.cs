@@ -1,4 +1,5 @@
 using Estreya.MumbleMock.Extensions;
+using Estreya.MumbleMock.Handlers;
 using Estreya.MumbleMock.Logging;
 using Estreya.MumbleMock.Models;
 using Estreya.MumbleMock.MumbleLink;
@@ -9,10 +10,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using System.Text;
 
 namespace Estreya.MumbleMock;
 
@@ -80,9 +82,9 @@ public partial class MainForm : Form
 
     private async void MainForm_Load(object? sender, EventArgs e)
     {
-            await this.LoadAPIValues();
-            this.FillAPIValues();
-        }
+        await this.LoadAPIValues();
+        this.FillAPIValues();
+    }
 
     private void MainForm_FormClosed(object? sender, FormClosedEventArgs e)
     {
@@ -192,16 +194,16 @@ public partial class MainForm : Form
         mem.context.buildId = string.IsNullOrWhiteSpace(this.tb_Game_BuildId.Text) ? 0 : Convert.ToUInt32(this.tb_Game_BuildId.Text);
         mem.context.uiState = this.GetUIState();
 
-        var compassSize = this.GetCompassSize();
+        Size compassSize = this.GetCompassSize();
         mem.context.compassWidth = (ushort)compassSize.Width;
         mem.context.compassHeight = (ushort)compassSize.Height;
         mem.context.compassRotation = this.GetCompassRotation();
 
-        var playerMapPosition = this.GetPlayerMapPosition();
+        Vector2 playerMapPosition = this.GetPlayerMapPosition();
         mem.context.playerMapX = playerMapPosition.X;
         mem.context.playerMapY = playerMapPosition.Y;
 
-        var mapCenter = this.GetMapCenter();
+        Vector2 mapCenter = this.GetMapCenter();
         mem.context.mapCenterX = mapCenter.X;
         mem.context.mapCenterY = mapCenter.Y;
         mem.context.mapScale = this.GetMapScale();
@@ -585,7 +587,7 @@ public partial class MainForm : Form
                 if (string.IsNullOrWhiteSpace(className.ToString()))
                 {
                     className.Append("-- Not found --");
-            }
+                }
 
                 this.lbl_Game_ProcessId_Value.Text = $"{this._selectedProcess.ProcessName} - ID: {this._selectedProcess.Id} - Window Class: {className}";
             }
@@ -636,72 +638,37 @@ public partial class MainForm : Form
 
     private void tsmi_Export_Click(object sender, EventArgs e)
     {
-        var sfd = new SaveFileDialog
+        SaveFileDialog sfd = new SaveFileDialog
         {
             Filter = "JSON (*.json)|*.json",
             FileName = "MumbleMock.json"
         };
 
-        var result = sfd.ShowDialog();
+        DialogResult result = sfd.ShowDialog();
 
         if (result != DialogResult.OK) return;
 
-        var compassSize = this.GetCompassSize();
-        var json = JsonConvert.SerializeObject(new SaveData()
-        {
-            AvatarPosition = this.GetAvatarPositon().ToVector3(),
-            AvatarFront = this.GetAvatarFront().ToVector3(),
-            AvatarTop = Vector3.Zero,
-            CameraPosition = this.GetCameraPositon().ToVector3(),
-            CameraFront = this.GetCameraFront().ToVector3(),
-            CameraTop = Vector3.Zero,
-            Identity = new Identity()
-            {
-                Name = this.tb_Identity_Name.Text,
-                Race = this.cb_Identity_Race.SelectedItem?.ToString(),
-                Profession = this.cb_Identity_Profession.SelectedItem?.ToString(),
-                Specialization = this.cb_Identity_Spec.SelectedItem?.ToString(),
-                WorldId = this.cb_World_ID.SelectedItem?.ToString(),
-                UISize = this.cb_UI_Scale.SelectedItem?.ToString(),
-                TeamColorId = 0,
-                IsCommander = this.cb_Identity_IsCommander.Checked,
-                FOV = this.GetFOV()
-            },
-            Context = new Context()
-            {
-                BuildId = this.tb_Game_BuildId.Text,
-                UiState = this.GetUIState(),
-                CompassHeight = (ushort)compassSize.Height,
-                CompassWidth = (ushort)compassSize.Width,
-                CompassRotation = this.GetCompassRotation(),
-                PlayerPosition = this.GetPlayerMapPosition(),
-                MapCenter = this.GetMapCenter(),
-                MapScale = this.GetMapScale(),
-                MapId = this.cb_Map_ID.SelectedItem?.ToString(),
-                MapType = this.cb_Map_Type.SelectedItem?.ToString(),
-                Mount = this.cb_Identity_Mount.SelectedItem?.ToString(),
-            }
-        }, this.GetJsonSerializerSettings()) ;
+        string json = JsonConvert.SerializeObject(this.GetSaveData(), this.GetJsonSerializerSettings());
 
         System.IO.File.WriteAllText(sfd.FileName, json);
     }
 
     private void tsmi_Import_Click(object sender, EventArgs e)
     {
-        var ofd = new OpenFileDialog()
+        OpenFileDialog ofd = new OpenFileDialog()
         {
             Filter = "JSON (*.json)|*.json",
             FileName = "MumbleMock.json",
             CheckFileExists = true
         };
 
-        var result = ofd.ShowDialog();
+        DialogResult result = ofd.ShowDialog();
 
         if (result != DialogResult.OK) return;
 
-        var json = System.IO.File.ReadAllText(ofd.FileName);
+        string json = System.IO.File.ReadAllText(ofd.FileName);
 
-        var saveData = JsonConvert.DeserializeObject<SaveData>(json);
+        SaveData? saveData = JsonConvert.DeserializeObject<SaveData>(json);
 
         if (saveData is null) return;
 
@@ -759,14 +726,49 @@ public partial class MainForm : Form
         }
     }
 
-    private void GetSaveData()
+    private SaveData GetSaveData()
     {
-        var saveData = new SaveData();
+        Size compassSize = this.GetCompassSize();
+        return new SaveData()
+        {
+            AvatarPosition = this.GetAvatarPositon().ToVector3(),
+            AvatarFront = this.GetAvatarFront().ToVector3(),
+            AvatarTop = Vector3.Zero,
+            CameraPosition = this.GetCameraPositon().ToVector3(),
+            CameraFront = this.GetCameraFront().ToVector3(),
+            CameraTop = Vector3.Zero,
+            Identity = new Identity()
+            {
+                Name = this.tb_Identity_Name.Text,
+                Race = this._raceHandler.GetValueAsText(),
+                Profession = this._professionHandler.GetValueAsText(),
+                Specialization = this._specializationHandler.GetValueAsText(),
+                WorldId = this._worldHandler.GetValueAsText(),
+                UISize = this._uiScaleHandler.GetValueAsText(),
+                TeamColorId = 0,
+                IsCommander = this.cb_Identity_IsCommander.Checked,
+                FOV = this.GetFOV()
+            },
+            Context = new Context()
+            {
+                BuildId = this.tb_Game_BuildId.Text,
+                UiState = this.GetUIState(),
+                CompassHeight = (ushort)compassSize.Height,
+                CompassWidth = (ushort)compassSize.Width,
+                CompassRotation = this.GetCompassRotation(),
+                PlayerPosition = this.GetPlayerMapPosition(),
+                MapCenter = this.GetMapCenter(),
+                MapScale = this.GetMapScale(),
+                MapId = this._mapIdHandler.GetValueAsText(),
+                MapType = this._mapTypeHandler.GetValueAsText(),
+                Mount = this._mountHandler.GetValueAsText(),
+            }
+        };
     }
 
     private JsonSerializerSettings GetJsonSerializerSettings()
     {
-        var settings = new JsonSerializerSettings()
+        JsonSerializerSettings settings = new JsonSerializerSettings()
         {
             Formatting = Formatting.Indented,
         };
