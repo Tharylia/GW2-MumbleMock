@@ -1,4 +1,4 @@
-namespace Estreya.MumbleMock;
+﻿namespace Estreya.MumbleMock;
 
 partial class MainForm
 {
@@ -94,6 +94,12 @@ partial class MainForm
         lbl_Map_Type = new Label();
         lbl_Map_ID = new Label();
         gb_Game = new GroupBox();
+        lbl_Game_ProcessArguments = new Label();
+        tb_Game_ProcessArguments = new TextBox();
+        btn_Game_SelectWindowsApp = new Button();
+        btn_Game_SelectApplication = new Button();
+        tb_Game_ProcessPath = new TextBox();
+        btn_Game_StartProcess = new Button();
         btn_Game_SelectProcess = new Button();
         lbl_Game_ProcessId_Value = new Label();
         tb_Game_BuildId = new TextBox();
@@ -754,6 +760,12 @@ partial class MainForm
         // 
         // gb_Game
         // 
+        gb_Game.Controls.Add(lbl_Game_ProcessArguments);
+        gb_Game.Controls.Add(tb_Game_ProcessArguments);
+        gb_Game.Controls.Add(btn_Game_SelectWindowsApp);
+        gb_Game.Controls.Add(btn_Game_SelectApplication);
+        gb_Game.Controls.Add(tb_Game_ProcessPath);
+        gb_Game.Controls.Add(btn_Game_StartProcess);
         gb_Game.Controls.Add(btn_Game_SelectProcess);
         gb_Game.Controls.Add(lbl_Game_ProcessId_Value);
         gb_Game.Controls.Add(tb_Game_BuildId);
@@ -761,16 +773,71 @@ partial class MainForm
         gb_Game.Controls.Add(lbl_Game_BuildId);
         gb_Game.Location = new Point(520, 416);
         gb_Game.Name = "gb_Game";
-        gb_Game.Size = new Size(502, 83);
+        gb_Game.Size = new Size(502, 170);
         gb_Game.TabIndex = 7;
         gb_Game.TabStop = false;
         gb_Game.Text = "Game";
         // 
+        // lbl_Game_ProcessArguments
+        // 
+        lbl_Game_ProcessArguments.AutoSize = true;
+        lbl_Game_ProcessArguments.Location = new Point(6, 141);
+        lbl_Game_ProcessArguments.Name = "lbl_Game_ProcessArguments";
+        lbl_Game_ProcessArguments.Size = new Size(69, 15);
+        lbl_Game_ProcessArguments.TabIndex = 21;
+        lbl_Game_ProcessArguments.Text = "Arguments:";
+        // 
+        // tb_Game_ProcessArguments
+        // 
+        tb_Game_ProcessArguments.Location = new Point(77, 138);
+        tb_Game_ProcessArguments.Name = "tb_Game_ProcessArguments";
+        tb_Game_ProcessArguments.Size = new Size(419, 23);
+        tb_Game_ProcessArguments.TabIndex = 7;
+        tb_Game_ProcessArguments.TextChanged += this.tb_Game_ProcessArguments_TextChanged;
+        // 
+        // btn_Game_SelectWindowsApp
+        // 
+        btn_Game_SelectWindowsApp.Location = new Point(352, 74);
+        btn_Game_SelectWindowsApp.Name = "btn_Game_SelectWindowsApp";
+        btn_Game_SelectWindowsApp.Size = new Size(144, 23);
+        btn_Game_SelectWindowsApp.TabIndex = 5;
+        btn_Game_SelectWindowsApp.Text = "Select Windows App";
+        btn_Game_SelectWindowsApp.UseVisualStyleBackColor = true;
+        btn_Game_SelectWindowsApp.Click += this.btn_Game_SelectWindowsApp_Click;
+        // 
+        // btn_Game_SelectApplication
+        // 
+        btn_Game_SelectApplication.Location = new Point(215, 74);
+        btn_Game_SelectApplication.Name = "btn_Game_SelectApplication";
+        btn_Game_SelectApplication.Size = new Size(131, 23);
+        btn_Game_SelectApplication.TabIndex = 4;
+        btn_Game_SelectApplication.Text = "Select Application";
+        btn_Game_SelectApplication.UseVisualStyleBackColor = true;
+        btn_Game_SelectApplication.Click += this.btn_Game_SelectApplication_Click;
+        // 
+        // tb_Game_ProcessPath
+        // 
+        tb_Game_ProcessPath.Location = new Point(6, 109);
+        tb_Game_ProcessPath.Name = "tb_Game_ProcessPath";
+        tb_Game_ProcessPath.ReadOnly = true;
+        tb_Game_ProcessPath.Size = new Size(490, 23);
+        tb_Game_ProcessPath.TabIndex = 6;
+        // 
+        // btn_Game_StartProcess
+        // 
+        btn_Game_StartProcess.Location = new Point(110, 74);
+        btn_Game_StartProcess.Name = "btn_Game_StartProcess";
+        btn_Game_StartProcess.Size = new Size(99, 23);
+        btn_Game_StartProcess.TabIndex = 3;
+        btn_Game_StartProcess.Text = "Start Process";
+        btn_Game_StartProcess.UseVisualStyleBackColor = true;
+        btn_Game_StartProcess.Click += this.btn_Game_StartProcess_Click;
+        // 
         // btn_Game_SelectProcess
         // 
-        btn_Game_SelectProcess.Location = new Point(421, 51);
+        btn_Game_SelectProcess.Location = new Point(6, 74);
         btn_Game_SelectProcess.Name = "btn_Game_SelectProcess";
-        btn_Game_SelectProcess.Size = new Size(75, 23);
+        btn_Game_SelectProcess.Size = new Size(98, 23);
         btn_Game_SelectProcess.TabIndex = 2;
         btn_Game_SelectProcess.Text = "Select";
         btn_Game_SelectProcess.UseVisualStyleBackColor = true;
@@ -778,10 +845,9 @@ partial class MainForm
         // 
         // lbl_Game_ProcessId_Value
         // 
-        lbl_Game_ProcessId_Value.AutoSize = true;
-        lbl_Game_ProcessId_Value.Location = new Point(76, 54);
+        lbl_Game_ProcessId_Value.Location = new Point(77, 51);
         lbl_Game_ProcessId_Value.Name = "lbl_Game_ProcessId_Value";
-        lbl_Game_ProcessId_Value.Size = new Size(0, 15);
+        lbl_Game_ProcessId_Value.Size = new Size(419, 20);
         lbl_Game_ProcessId_Value.TabIndex = 1;
         // 
         // tb_Game_BuildId
@@ -1011,14 +1077,14 @@ partial class MainForm
         // tsmi_Export
         // 
         tsmi_Export.Name = "tsmi_Export";
-        tsmi_Export.Size = new Size(180, 22);
+        tsmi_Export.Size = new Size(110, 22);
         tsmi_Export.Text = "Export";
         tsmi_Export.Click += this.tsmi_Export_Click;
         // 
         // tsmi_Import
         // 
         tsmi_Import.Name = "tsmi_Import";
-        tsmi_Import.Size = new Size(180, 22);
+        tsmi_Import.Size = new Size(110, 22);
         tsmi_Import.Text = "Import";
         tsmi_Import.Click += this.tsmi_Import_Click;
         // 
@@ -1038,7 +1104,7 @@ partial class MainForm
         this.Controls.Add(gb_AvatarPosition);
         this.Controls.Add(ms_Menu);
         this.MainMenuStrip = ms_Menu;
-        this.MinimumSize = new Size(1050, 489);
+        this.MinimumSize = new Size(1050, 832);
         this.Name = "MainForm";
         this.Text = "MumbleMock";
         gb_AvatarPosition.ResumeLayout(false);
@@ -1159,4 +1225,10 @@ partial class MainForm
     private ToolStripMenuItem msi_File;
     private ToolStripMenuItem tsmi_Export;
     private ToolStripMenuItem tsmi_Import;
+    private Button btn_Game_StartProcess;
+    private Button btn_Game_SelectApplication;
+    private TextBox tb_Game_ProcessPath;
+    private Button btn_Game_SelectWindowsApp;
+    private TextBox tb_Game_ProcessArguments;
+    private Label lbl_Game_ProcessArguments;
 }

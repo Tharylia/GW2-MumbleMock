@@ -51,8 +51,8 @@ public partial class MainForm : Form
 
         this._uiScaleHandler.ComboBox.SelectedIndex = 0;
         this.tb_UI_CompassRotation.Enabled = this.cb_UI_IsCompassRotationEnabled.Checked;
-
-        this._logger = new Logger(this.rtb_Log);
+        this.UpdateSelectedProcessPath(Properties.Settings.Default.ProcessPath);
+        this.UpdateSelectedProcessArguments(Properties.Settings.Default.ProcessArguments, true);
 
         this.CreateAndOpenMumbleWriter();
     }
@@ -564,11 +564,39 @@ public partial class MainForm : Form
 
         if (result == DialogResult.OK)
         {
-            this._selectedProcess = form.SelectedProcess;
+            this.SelectProcess(form.SelectedProcess);
+        }
+    }
+
+    private void SelectProcess(Process? process)
+    {
+        if (process?.HasExited ?? false)
+        {
+            this._selectedProcess = null;
+        }
+        else
+        {
+
+            this._selectedProcess = process;
             if (this._selectedProcess != null)
             {
-                this.lbl_Game_ProcessId_Value.Text = $"{this._selectedProcess.ProcessName} - {this._selectedProcess.Id}";
+                StringBuilder className = new StringBuilder(256);
+                int hresult = GetClassName(this._selectedProcess.MainWindowHandle, className, className.Capacity);
+                if (string.IsNullOrWhiteSpace(className.ToString()))
+                {
+                    className.Append("-- Not found --");
             }
+
+                this.lbl_Game_ProcessId_Value.Text = $"{this._selectedProcess.ProcessName} - ID: {this._selectedProcess.Id} - Window Class: {className}";
+            }
+            else
+            {
+            }
+        }
+
+        if (this._selectedProcess is null)
+        {
+            this.lbl_Game_ProcessId_Value.Text = null;
         }
     }
 
@@ -746,5 +774,80 @@ public partial class MainForm : Form
         settings.Converters.Add(new StringEnumConverter());
 
         return settings;
+    }
+
+    private async void btn_Game_StartProcess_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            Process process = Process.Start(Properties.Settings.Default.ProcessPath, Properties.Settings.Default.ProcessArguments);
+            await Task.Delay(1000);
+            this.SelectProcess(process);
+
+            if (this._selectedProcess is null)
+            {
+                this._logger.Warn("Started process has exited before analysing was possible. (Probably spawned a separate process)");
+            }
+        }
+        catch (Exception ex)
+        {
+            this._logger.Error($"Failed to start process: {ex.Message}");
+        }
+    }
+
+    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+
+    private void btn_Game_SelectApplication_Click(object sender, EventArgs e)
+    {
+        OpenFileDialog ofd = new OpenFileDialog()
+        {
+            Filter = "Application (*.exe)|*.exe",
+            CheckFileExists = true,
+        };
+
+        DialogResult result = ofd.ShowDialog();
+
+        if (result != DialogResult.OK) return;
+
+        this.UpdateSelectedProcessPath(ofd.FileName);
+        this.UpdateSelectedProcessArguments(null, true);
+    }
+
+    private void UpdateSelectedProcessPath(string processPath)
+    {
+        Properties.Settings.Default.ProcessPath = processPath;
+        Properties.Settings.Default.Save();
+        this.tb_Game_ProcessPath.Text = processPath;
+    }
+    private void UpdateSelectedProcessArguments(string? arguments, bool updateTextbox = true)
+    {
+        Properties.Settings.Default.ProcessArguments = arguments;
+        Properties.Settings.Default.Save();
+        if (updateTextbox)
+        {
+            this.tb_Game_ProcessArguments.Text = arguments;
+        }
+    }
+
+    private void btn_Game_SelectWindowsApp_Click(object sender, EventArgs e)
+    {
+        MessageBox.Show("Run powershell and execute \"Get-StartApps\".\nCopy the AppId you want to run.\n\nPaste it as an argument in the argument textbox with the following format:\n\nshell:AppFolder\\[APPID]", "Windows Apps", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        //SelectWindowsAppFrom form = new SelectWindowsAppFrom();
+
+        //DialogResult result = form.ShowDialog();
+
+        //if (result == DialogResult.OK)
+        //{
+        //    //this.SelectProcess(form.SelectedProcess);
+        //}
+        this.UpdateSelectedProcessPath($"explorer.exe");
+        //this.UpdateSelectedProcessArguments("shell:AppsFolder\\Microsoft.WindowsTerminal_8wekyb3d8bbwe!App", true);
+    }
+
+    private void tb_Game_ProcessArguments_TextChanged(object sender, EventArgs e)
+    {
+        this.UpdateSelectedProcessArguments(this.tb_Game_ProcessArguments.Text, false);
     }
 }
