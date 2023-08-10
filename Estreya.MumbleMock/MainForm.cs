@@ -228,7 +228,7 @@ public partial class MainForm : Form
             "human" => 2,
             "norn" => 3,
             "sylvari" => 4,
-            _ => throw new ArgumentException($"Invalid race."),
+            _ => throw new ArgumentException($"Invalid race {value}."),
         };
     }
 
@@ -247,7 +247,7 @@ public partial class MainForm : Form
             "mesmer" => 7,
             "necromancer" => 8,
             "revenant" => 9,
-            _ => throw new ArgumentException($"Invalid profession."),
+            _ => throw new ArgumentException($"Invalid profession {value}."),
         };
     }
 
@@ -267,7 +267,7 @@ public partial class MainForm : Form
             "skyscale" => 8,
             "skiff" => 9,
             "siege turtle" => 10,
-            _ => throw new ArgumentException($"Invalid mount."),
+            _ => throw new ArgumentException($"Invalid mount {value}."),
         };
     }
 
@@ -280,7 +280,7 @@ public partial class MainForm : Form
             "normal" => 1,
             "large" => 2,
             "larger" => 3,
-            _ => throw new ArgumentException($"Invalid ui scale."),
+            _ => throw new ArgumentException($"Invalid ui scale {value}."),
         };
     }
 
