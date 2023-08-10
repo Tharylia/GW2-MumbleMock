@@ -1,4 +1,4 @@
-﻿namespace Estreya.MumbleMock;
+namespace Estreya.MumbleMock;
 
 partial class MainForm
 {
@@ -166,7 +166,7 @@ partial class MainForm
         tb_AvatarPosition_Z.Location = new Point(29, 80);
         tb_AvatarPosition_Z.Name = "tb_AvatarPosition_Z";
         tb_AvatarPosition_Z.Size = new Size(213, 23);
-        tb_AvatarPosition_Z.TabIndex = 4;
+        tb_AvatarPosition_Z.TabIndex = 2;
         tb_AvatarPosition_Z.Text = "0";
         // 
         // lbl_AvatarPosition_Y
@@ -183,7 +183,7 @@ partial class MainForm
         tb_AvatarPosition_Y.Location = new Point(29, 51);
         tb_AvatarPosition_Y.Name = "tb_AvatarPosition_Y";
         tb_AvatarPosition_Y.Size = new Size(213, 23);
-        tb_AvatarPosition_Y.TabIndex = 2;
+        tb_AvatarPosition_Y.TabIndex = 1;
         tb_AvatarPosition_Y.Text = "0";
         // 
         // lbl_AvatarPosition_X
@@ -214,7 +214,7 @@ partial class MainForm
         gb_AvatarFront.Location = new Point(266, 27);
         gb_AvatarFront.Name = "gb_AvatarFront";
         gb_AvatarFront.Size = new Size(248, 112);
-        gb_AvatarFront.TabIndex = 6;
+        gb_AvatarFront.TabIndex = 1;
         gb_AvatarFront.TabStop = false;
         gb_AvatarFront.Text = "Avatar Front";
         // 
@@ -232,7 +232,7 @@ partial class MainForm
         tb_AvatarFront_Z.Location = new Point(29, 80);
         tb_AvatarFront_Z.Name = "tb_AvatarFront_Z";
         tb_AvatarFront_Z.Size = new Size(213, 23);
-        tb_AvatarFront_Z.TabIndex = 4;
+        tb_AvatarFront_Z.TabIndex = 2;
         tb_AvatarFront_Z.Text = "0";
         // 
         // lbl_AvatarFront_Y
@@ -249,7 +249,7 @@ partial class MainForm
         tb_AvatarFront_Y.Location = new Point(29, 51);
         tb_AvatarFront_Y.Name = "tb_AvatarFront_Y";
         tb_AvatarFront_Y.Size = new Size(213, 23);
-        tb_AvatarFront_Y.TabIndex = 2;
+        tb_AvatarFront_Y.TabIndex = 1;
         tb_AvatarFront_Y.Text = "0";
         // 
         // lbl_AvatarFront_X
@@ -280,7 +280,7 @@ partial class MainForm
         gb_CameraFront.Location = new Point(774, 27);
         gb_CameraFront.Name = "gb_CameraFront";
         gb_CameraFront.Size = new Size(248, 112);
-        gb_CameraFront.TabIndex = 8;
+        gb_CameraFront.TabIndex = 3;
         gb_CameraFront.TabStop = false;
         gb_CameraFront.Text = "Camera Front";
         // 
@@ -298,7 +298,7 @@ partial class MainForm
         tb_CameraFront_Z.Location = new Point(29, 80);
         tb_CameraFront_Z.Name = "tb_CameraFront_Z";
         tb_CameraFront_Z.Size = new Size(213, 23);
-        tb_CameraFront_Z.TabIndex = 4;
+        tb_CameraFront_Z.TabIndex = 2;
         tb_CameraFront_Z.Text = "0";
         // 
         // lbl_CameraFront_Y
@@ -315,7 +315,7 @@ partial class MainForm
         tb_CameraFront_Y.Location = new Point(29, 51);
         tb_CameraFront_Y.Name = "tb_CameraFront_Y";
         tb_CameraFront_Y.Size = new Size(213, 23);
-        tb_CameraFront_Y.TabIndex = 2;
+        tb_CameraFront_Y.TabIndex = 1;
         tb_CameraFront_Y.Text = "0";
         // 
         // lbl_CameraFront_X
@@ -346,7 +346,7 @@ partial class MainForm
         gb_CameraPosition.Location = new Point(520, 27);
         gb_CameraPosition.Name = "gb_CameraPosition";
         gb_CameraPosition.Size = new Size(248, 112);
-        gb_CameraPosition.TabIndex = 7;
+        gb_CameraPosition.TabIndex = 2;
         gb_CameraPosition.TabStop = false;
         gb_CameraPosition.Text = "Camera Position";
         // 
@@ -364,7 +364,7 @@ partial class MainForm
         tb_CameraPosition_Z.Location = new Point(29, 80);
         tb_CameraPosition_Z.Name = "tb_CameraPosition_Z";
         tb_CameraPosition_Z.Size = new Size(213, 23);
-        tb_CameraPosition_Z.TabIndex = 4;
+        tb_CameraPosition_Z.TabIndex = 2;
         tb_CameraPosition_Z.Text = "0";
         // 
         // lbl_CameraPosition_Y
@@ -381,7 +381,7 @@ partial class MainForm
         tb_CameraPosition_Y.Location = new Point(29, 51);
         tb_CameraPosition_Y.Name = "tb_CameraPosition_Y";
         tb_CameraPosition_Y.Size = new Size(213, 23);
-        tb_CameraPosition_Y.TabIndex = 2;
+        tb_CameraPosition_Y.TabIndex = 1;
         tb_CameraPosition_Y.Text = "0";
         // 
         // lbl_CameraPosition_X
@@ -417,7 +417,7 @@ partial class MainForm
         gb_Identity.Location = new Point(12, 145);
         gb_Identity.Name = "gb_Identity";
         gb_Identity.Size = new Size(502, 190);
-        gb_Identity.TabIndex = 6;
+        gb_Identity.TabIndex = 4;
         gb_Identity.TabStop = false;
         gb_Identity.Text = "Identity";
         // 
@@ -427,7 +427,7 @@ partial class MainForm
         cb_Identity_IsCommander.Location = new Point(6, 167);
         cb_Identity_IsCommander.Name = "cb_Identity_IsCommander";
         cb_Identity_IsCommander.Size = new Size(104, 19);
-        cb_Identity_IsCommander.TabIndex = 23;
+        cb_Identity_IsCommander.TabIndex = 5;
         cb_Identity_IsCommander.Text = "Is Commander";
         cb_Identity_IsCommander.UseVisualStyleBackColor = true;
         // 
@@ -438,7 +438,7 @@ partial class MainForm
         cb_Identity_Mount.Location = new Point(77, 138);
         cb_Identity_Mount.Name = "cb_Identity_Mount";
         cb_Identity_Mount.Size = new Size(419, 23);
-        cb_Identity_Mount.TabIndex = 12;
+        cb_Identity_Mount.TabIndex = 4;
         // 
         // lbl_Identity_Mount
         // 
@@ -456,7 +456,7 @@ partial class MainForm
         cb_Identity_Spec.Location = new Point(77, 109);
         cb_Identity_Spec.Name = "cb_Identity_Spec";
         cb_Identity_Spec.Size = new Size(419, 23);
-        cb_Identity_Spec.TabIndex = 10;
+        cb_Identity_Spec.TabIndex = 3;
         // 
         // cb_Identity_Profession
         // 
@@ -465,7 +465,7 @@ partial class MainForm
         cb_Identity_Profession.Location = new Point(77, 80);
         cb_Identity_Profession.Name = "cb_Identity_Profession";
         cb_Identity_Profession.Size = new Size(419, 23);
-        cb_Identity_Profession.TabIndex = 9;
+        cb_Identity_Profession.TabIndex = 2;
         // 
         // cb_Identity_Race
         // 
@@ -474,7 +474,7 @@ partial class MainForm
         cb_Identity_Race.Location = new Point(77, 51);
         cb_Identity_Race.Name = "cb_Identity_Race";
         cb_Identity_Race.Size = new Size(419, 23);
-        cb_Identity_Race.TabIndex = 8;
+        cb_Identity_Race.TabIndex = 1;
         // 
         // lbl_Identity_Spec
         // 
@@ -530,7 +530,7 @@ partial class MainForm
         gb_Status.Location = new Point(0, 636);
         gb_Status.Name = "gb_Status";
         gb_Status.Size = new Size(1034, 157);
-        gb_Status.TabIndex = 7;
+        gb_Status.TabIndex = 8;
         gb_Status.TabStop = false;
         gb_Status.Text = "Status";
         // 
@@ -551,7 +551,7 @@ partial class MainForm
         btn_Start.Location = new Point(872, 18);
         btn_Start.Name = "btn_Start";
         btn_Start.Size = new Size(75, 23);
-        btn_Start.TabIndex = 3;
+        btn_Start.TabIndex = 2;
         btn_Start.Text = "Start";
         btn_Start.UseVisualStyleBackColor = true;
         btn_Start.Click += this.btn_Start_Click;
@@ -563,7 +563,7 @@ partial class MainForm
         btn_Stop.Location = new Point(953, 18);
         btn_Stop.Name = "btn_Stop";
         btn_Stop.Size = new Size(75, 23);
-        btn_Stop.TabIndex = 2;
+        btn_Stop.TabIndex = 3;
         btn_Stop.Text = "Stop";
         btn_Stop.UseVisualStyleBackColor = true;
         btn_Stop.Click += this.btn_Stop_Click;
@@ -574,7 +574,7 @@ partial class MainForm
         cb_Log_LogMumbleUpdated.Location = new Point(6, 22);
         cb_Log_LogMumbleUpdated.Name = "cb_Log_LogMumbleUpdated";
         cb_Log_LogMumbleUpdated.Size = new Size(188, 19);
-        cb_Log_LogMumbleUpdated.TabIndex = 1;
+        cb_Log_LogMumbleUpdated.TabIndex = 0;
         cb_Log_LogMumbleUpdated.Text = "Log sucessfull mumble update";
         cb_Log_LogMumbleUpdated.UseVisualStyleBackColor = true;
         // 
@@ -585,7 +585,7 @@ partial class MainForm
         rtb_Log.Name = "rtb_Log";
         rtb_Log.ReadOnly = true;
         rtb_Log.Size = new Size(1028, 107);
-        rtb_Log.TabIndex = 0;
+        rtb_Log.TabIndex = 4;
         rtb_Log.Text = "";
         // 
         // gb_MapAndWorld
@@ -609,7 +609,7 @@ partial class MainForm
         gb_MapAndWorld.Location = new Point(520, 145);
         gb_MapAndWorld.Name = "gb_MapAndWorld";
         gb_MapAndWorld.Size = new Size(502, 265);
-        gb_MapAndWorld.TabIndex = 11;
+        gb_MapAndWorld.TabIndex = 6;
         gb_MapAndWorld.TabStop = false;
         gb_MapAndWorld.Text = "Map / World";
         // 
@@ -627,7 +627,7 @@ partial class MainForm
         tb_Map_Scale.Location = new Point(94, 225);
         tb_Map_Scale.Name = "tb_Map_Scale";
         tb_Map_Scale.Size = new Size(402, 23);
-        tb_Map_Scale.TabIndex = 18;
+        tb_Map_Scale.TabIndex = 7;
         tb_Map_Scale.Text = "0";
         // 
         // lbl_Map_CenterY
@@ -644,7 +644,7 @@ partial class MainForm
         tb_Map_CenterY.Location = new Point(94, 196);
         tb_Map_CenterY.Name = "tb_Map_CenterY";
         tb_Map_CenterY.Size = new Size(402, 23);
-        tb_Map_CenterY.TabIndex = 16;
+        tb_Map_CenterY.TabIndex = 6;
         tb_Map_CenterY.Text = "0";
         // 
         // lbl_Map_CenterX
@@ -661,7 +661,7 @@ partial class MainForm
         tb_Map_CenterX.Location = new Point(94, 167);
         tb_Map_CenterX.Name = "tb_Map_CenterX";
         tb_Map_CenterX.Size = new Size(402, 23);
-        tb_Map_CenterX.TabIndex = 14;
+        tb_Map_CenterX.TabIndex = 5;
         tb_Map_CenterX.Text = "0";
         // 
         // lbl_Map_PlayerY
@@ -680,14 +680,14 @@ partial class MainForm
         cb_World_ID.Location = new Point(94, 80);
         cb_World_ID.Name = "cb_World_ID";
         cb_World_ID.Size = new Size(402, 23);
-        cb_World_ID.TabIndex = 13;
+        cb_World_ID.TabIndex = 2;
         // 
         // tb_Map_PlayerY
         // 
         tb_Map_PlayerY.Location = new Point(94, 138);
         tb_Map_PlayerY.Name = "tb_Map_PlayerY";
         tb_Map_PlayerY.Size = new Size(402, 23);
-        tb_Map_PlayerY.TabIndex = 8;
+        tb_Map_PlayerY.TabIndex = 4;
         tb_Map_PlayerY.Text = "0";
         // 
         // lbl_World_Id
@@ -715,14 +715,14 @@ partial class MainForm
         cb_Map_ID.Location = new Point(94, 22);
         cb_Map_ID.Name = "cb_Map_ID";
         cb_Map_ID.Size = new Size(402, 23);
-        cb_Map_ID.TabIndex = 9;
+        cb_Map_ID.TabIndex = 0;
         // 
         // tb_Map_PlayerX
         // 
         tb_Map_PlayerX.Location = new Point(94, 109);
         tb_Map_PlayerX.Name = "tb_Map_PlayerX";
         tb_Map_PlayerX.Size = new Size(402, 23);
-        tb_Map_PlayerX.TabIndex = 6;
+        tb_Map_PlayerX.TabIndex = 3;
         tb_Map_PlayerX.Text = "0";
         // 
         // cb_Map_Type
@@ -732,7 +732,7 @@ partial class MainForm
         cb_Map_Type.Location = new Point(94, 51);
         cb_Map_Type.Name = "cb_Map_Type";
         cb_Map_Type.Size = new Size(402, 23);
-        cb_Map_Type.TabIndex = 8;
+        cb_Map_Type.TabIndex = 1;
         // 
         // lbl_Map_Type
         // 
@@ -762,7 +762,7 @@ partial class MainForm
         gb_Game.Location = new Point(520, 416);
         gb_Game.Name = "gb_Game";
         gb_Game.Size = new Size(502, 83);
-        gb_Game.TabIndex = 14;
+        gb_Game.TabIndex = 7;
         gb_Game.TabStop = false;
         gb_Game.Text = "Game";
         // 
@@ -771,7 +771,7 @@ partial class MainForm
         btn_Game_SelectProcess.Location = new Point(421, 51);
         btn_Game_SelectProcess.Name = "btn_Game_SelectProcess";
         btn_Game_SelectProcess.Size = new Size(75, 23);
-        btn_Game_SelectProcess.TabIndex = 15;
+        btn_Game_SelectProcess.TabIndex = 2;
         btn_Game_SelectProcess.Text = "Select";
         btn_Game_SelectProcess.UseVisualStyleBackColor = true;
         btn_Game_SelectProcess.Click += this.btn_Game_SelectProcess_Click;
@@ -782,14 +782,14 @@ partial class MainForm
         lbl_Game_ProcessId_Value.Location = new Point(76, 54);
         lbl_Game_ProcessId_Value.Name = "lbl_Game_ProcessId_Value";
         lbl_Game_ProcessId_Value.Size = new Size(0, 15);
-        lbl_Game_ProcessId_Value.TabIndex = 14;
+        lbl_Game_ProcessId_Value.TabIndex = 1;
         // 
         // tb_Game_BuildId
         // 
         tb_Game_BuildId.Location = new Point(77, 22);
         tb_Game_BuildId.Name = "tb_Game_BuildId";
         tb_Game_BuildId.Size = new Size(419, 23);
-        tb_Game_BuildId.TabIndex = 11;
+        tb_Game_BuildId.TabIndex = 0;
         // 
         // lbl_Game_ProcessId
         // 
@@ -831,7 +831,7 @@ partial class MainForm
         gb_UI.Location = new Point(12, 341);
         gb_UI.Name = "gb_UI";
         gb_UI.Size = new Size(502, 245);
-        gb_UI.TabIndex = 16;
+        gb_UI.TabIndex = 5;
         gb_UI.TabStop = false;
         gb_UI.Text = "UI";
         // 
@@ -849,7 +849,7 @@ partial class MainForm
         tb_UI_CompassRotation.Location = new Point(119, 213);
         tb_UI_CompassRotation.Name = "tb_UI_CompassRotation";
         tb_UI_CompassRotation.Size = new Size(377, 23);
-        tb_UI_CompassRotation.TabIndex = 24;
+        tb_UI_CompassRotation.TabIndex = 11;
         tb_UI_CompassRotation.Text = "0";
         // 
         // lbl_UI_CompassHeight
@@ -869,14 +869,14 @@ partial class MainForm
         cb_UI_Scale.Location = new Point(119, 126);
         cb_UI_Scale.Name = "cb_UI_Scale";
         cb_UI_Scale.Size = new Size(377, 23);
-        cb_UI_Scale.TabIndex = 15;
+        cb_UI_Scale.TabIndex = 8;
         // 
         // tb_UI_CompassHeight
         // 
         tb_UI_CompassHeight.Location = new Point(119, 184);
         tb_UI_CompassHeight.Name = "tb_UI_CompassHeight";
         tb_UI_CompassHeight.Size = new Size(377, 23);
-        tb_UI_CompassHeight.TabIndex = 22;
+        tb_UI_CompassHeight.TabIndex = 10;
         tb_UI_CompassHeight.Text = "0";
         // 
         // lbl_UI_Scale
@@ -902,7 +902,7 @@ partial class MainForm
         tb_UI_CompassWidth.Location = new Point(119, 155);
         tb_UI_CompassWidth.Name = "tb_UI_CompassWidth";
         tb_UI_CompassWidth.Size = new Size(377, 23);
-        tb_UI_CompassWidth.TabIndex = 20;
+        tb_UI_CompassWidth.TabIndex = 9;
         tb_UI_CompassWidth.Text = "0";
         // 
         // lbl_UI_FOV
@@ -920,7 +920,7 @@ partial class MainForm
         cb_UI_IsInCombat.Location = new Point(6, 72);
         cb_UI_IsInCombat.Name = "cb_UI_IsInCombat";
         cb_UI_IsInCombat.Size = new Size(93, 19);
-        cb_UI_IsInCombat.TabIndex = 22;
+        cb_UI_IsInCombat.TabIndex = 6;
         cb_UI_IsInCombat.Text = "Is In Combat";
         cb_UI_IsInCombat.UseVisualStyleBackColor = true;
         // 
@@ -929,7 +929,7 @@ partial class MainForm
         tb_UI_FOV.Location = new Point(119, 97);
         tb_UI_FOV.Name = "tb_UI_FOV";
         tb_UI_FOV.Size = new Size(377, 23);
-        tb_UI_FOV.TabIndex = 6;
+        tb_UI_FOV.TabIndex = 7;
         tb_UI_FOV.Text = "0.873";
         // 
         // cb_UI_IsCompetitiveMode
@@ -938,7 +938,7 @@ partial class MainForm
         cb_UI_IsCompetitiveMode.Location = new Point(162, 47);
         cb_UI_IsCompetitiveMode.Name = "cb_UI_IsCompetitiveMode";
         cb_UI_IsCompetitiveMode.Size = new Size(136, 19);
-        cb_UI_IsCompetitiveMode.TabIndex = 21;
+        cb_UI_IsCompetitiveMode.TabIndex = 4;
         cb_UI_IsCompetitiveMode.Text = "Is Competitive Mode";
         cb_UI_IsCompetitiveMode.UseVisualStyleBackColor = true;
         // 
@@ -948,7 +948,7 @@ partial class MainForm
         cb_UI_DoesAnyInputHaveFocus.Location = new Point(304, 47);
         cb_UI_DoesAnyInputHaveFocus.Name = "cb_UI_DoesAnyInputHaveFocus";
         cb_UI_DoesAnyInputHaveFocus.Size = new Size(171, 19);
-        cb_UI_DoesAnyInputHaveFocus.TabIndex = 20;
+        cb_UI_DoesAnyInputHaveFocus.TabIndex = 5;
         cb_UI_DoesAnyInputHaveFocus.Text = "Does Any Input Have Focus";
         cb_UI_DoesAnyInputHaveFocus.UseVisualStyleBackColor = true;
         // 
@@ -958,7 +958,7 @@ partial class MainForm
         cb_UI_DoesGameHaveFocus.Location = new Point(6, 47);
         cb_UI_DoesGameHaveFocus.Name = "cb_UI_DoesGameHaveFocus";
         cb_UI_DoesGameHaveFocus.Size = new Size(150, 19);
-        cb_UI_DoesGameHaveFocus.TabIndex = 19;
+        cb_UI_DoesGameHaveFocus.TabIndex = 3;
         cb_UI_DoesGameHaveFocus.Text = "Does Game Have Focus";
         cb_UI_DoesGameHaveFocus.UseVisualStyleBackColor = true;
         // 
@@ -968,7 +968,7 @@ partial class MainForm
         cb_UI_IsCompassTopRight.Location = new Point(105, 22);
         cb_UI_IsCompassTopRight.Name = "cb_UI_IsCompassTopRight";
         cb_UI_IsCompassTopRight.Size = new Size(139, 19);
-        cb_UI_IsCompassTopRight.TabIndex = 18;
+        cb_UI_IsCompassTopRight.TabIndex = 1;
         cb_UI_IsCompassTopRight.Text = "Is Compass Top Right";
         cb_UI_IsCompassTopRight.UseVisualStyleBackColor = true;
         // 
@@ -978,7 +978,7 @@ partial class MainForm
         cb_UI_IsCompassRotationEnabled.Location = new Point(250, 22);
         cb_UI_IsCompassRotationEnabled.Name = "cb_UI_IsCompassRotationEnabled";
         cb_UI_IsCompassRotationEnabled.Size = new Size(179, 19);
-        cb_UI_IsCompassRotationEnabled.TabIndex = 17;
+        cb_UI_IsCompassRotationEnabled.TabIndex = 2;
         cb_UI_IsCompassRotationEnabled.Text = "Is Compass Rotation Enabled";
         cb_UI_IsCompassRotationEnabled.UseVisualStyleBackColor = true;
         cb_UI_IsCompassRotationEnabled.CheckedChanged += this.cb_UI_IsCompassRotationEnabled_CheckedChanged;
@@ -989,7 +989,7 @@ partial class MainForm
         cb_UI_IsMapOpen.Location = new Point(6, 22);
         cb_UI_IsMapOpen.Name = "cb_UI_IsMapOpen";
         cb_UI_IsMapOpen.Size = new Size(93, 19);
-        cb_UI_IsMapOpen.TabIndex = 16;
+        cb_UI_IsMapOpen.TabIndex = 0;
         cb_UI_IsMapOpen.Text = "Is Map Open";
         cb_UI_IsMapOpen.UseVisualStyleBackColor = true;
         // 
