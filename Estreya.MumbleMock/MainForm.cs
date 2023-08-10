@@ -29,17 +29,53 @@ public partial class MainForm : Form
     private List<MountType>? _mounts;
     private Process? _selectedProcess;
 
+    private ComboBoxHandler<string> _raceHandler;
+    private ComboBoxHandler<string> _professionHandler;
+    private ComboBoxHandler<string> _specializationHandler;
+    private ComboBoxHandler<string> _mountHandler;
+    private ComboBoxHandler<string> _uiScaleHandler;
+    private ComboBoxHandler<string> _mapTypeHandler;
+    private ComboBoxHandler<string> _mapIdHandler;
+    private ComboBoxHandler<string> _worldHandler;
+
     public MainForm()
     {
         this.InitializeComponent();
+
+        this._logger = new Logger(this.rtb_Log);
+
+        this.RegisterHandlers();
+
         this.FormClosed += this.MainForm_FormClosed;
         this.Load += this.MainForm_Load;
-        this.cb_UI_Scale.SelectedIndex = 0;
+
+        this._uiScaleHandler.ComboBox.SelectedIndex = 0;
         this.tb_UI_CompassRotation.Enabled = this.cb_UI_IsCompassRotationEnabled.Checked;
 
         this._logger = new Logger(this.rtb_Log);
 
         this.CreateAndOpenMumbleWriter();
+    }
+
+    [MemberNotNull(
+        nameof(_raceHandler),
+        nameof(_professionHandler),
+        nameof(_specializationHandler),
+        nameof(_mountHandler),
+        nameof(_uiScaleHandler),
+        nameof(_mapTypeHandler),
+        nameof(_mapIdHandler),
+        nameof(_worldHandler))]
+    private void RegisterHandlers()
+    {
+        this._raceHandler = new ComboBoxHandler<string>(this.cb_Identity_Race);
+        this._professionHandler = new ComboBoxHandler<string>(this.cb_Identity_Profession);
+        this._specializationHandler = new ComboBoxHandler<string>(this.cb_Identity_Spec);
+        this._mountHandler = new ComboBoxHandler<string>(this.cb_Identity_Mount);
+        this._uiScaleHandler = new ComboBoxHandler<string>(this.cb_UI_Scale);
+        this._mapTypeHandler = new ComboBoxHandler<string>(this.cb_Map_ID);
+        this._mapIdHandler = new ComboBoxHandler<string>(this.cb_Map_Type);
+        this._worldHandler = new ComboBoxHandler<string>(this.cb_World_ID);
     }
 
     private async void MainForm_Load(object? sender, EventArgs e)
@@ -182,7 +218,8 @@ public partial class MainForm : Form
 
     private int GetRace()
     {
-        return (this.cb_Identity_Race.SelectedItem?.ToString()?.ToLowerInvariant()) switch
+        string? value = this._raceHandler?.GetValueAsText(null);
+        return (value?.ToLowerInvariant()) switch
         {
             "asura" or null or "" => 0,
             "charr" => 1,
@@ -195,7 +232,8 @@ public partial class MainForm : Form
 
     private int GetProfession()
     {
-        return (this.cb_Identity_Profession.SelectedItem?.ToString()?.ToLowerInvariant()) switch
+        string? value = this._professionHandler?.GetValueAsText(null);
+        return (value?.ToLowerInvariant()) switch
         {
             null or "" => 0,
             "guardian" => 1,
@@ -213,7 +251,8 @@ public partial class MainForm : Form
 
     private int GetMount()
     {
-        return (this.cb_Identity_Mount.SelectedItem?.ToString()?.ToLowerInvariant()) switch
+        string? value = this._mountHandler?.GetValueAsText(null);
+        return (value?.ToLowerInvariant()) switch
         {
             null or "" => 0,
             "jackal" => 1,
@@ -232,7 +271,8 @@ public partial class MainForm : Form
 
     private int GetUIScale()
     {
-        return (this.cb_UI_Scale.SelectedItem?.ToString()?.ToLowerInvariant()) switch
+        string? value = this._uiScaleHandler?.GetValueAsText(null);
+        return (value?.ToLowerInvariant()) switch
         {
             null or "" or "small" => 0,
             "normal" => 1,
@@ -244,7 +284,8 @@ public partial class MainForm : Form
 
     private uint GetMapType()
     {
-        return (this.cb_Map_Type.SelectedItem?.ToString()?.ToLowerInvariant()) switch
+        string? value = this._mapTypeHandler?.GetValueAsText(null);
+        return (value?.ToLowerInvariant()) switch
         {
             null or "" => 9,
             "public" => 5,
@@ -263,17 +304,23 @@ public partial class MainForm : Form
 
     private int GetSpecialization()
     {
-        return Convert.ToInt32(this._specializations?.FirstOrDefault(x => x.Name == this.cb_Identity_Spec.SelectedItem?.ToString())?.Id ?? 0);
+        string value = this._specializationHandler.GetValueAsText(null) ?? "0";
+        Specialization? spec = this._specializations?.FirstOrDefault(x => x.Name == value);
+        return spec is not null ? spec.Id : int.Parse(value, CultureInfo.InvariantCulture);
     }
 
     private int GetWorld()
     {
-        return Convert.ToInt32(this._worlds?.FirstOrDefault(x => x.Name == this.cb_World_ID.SelectedItem?.ToString())?.Id ?? 0);
+        string value = this._worldHandler.GetValueAsText(null) ?? "0";
+        World? world = this._worlds?.FirstOrDefault(x => x.Name == value);
+        return world is not null ? world.Id : int.Parse(value, CultureInfo.InvariantCulture);
     }
 
     private uint GetMap()
     {
-        return Convert.ToUInt32(this._maps?.FirstOrDefault(x => x.Name == this.cb_Map_ID.SelectedItem?.ToString())?.Id ?? 0);
+        string value = this._mapIdHandler.GetValueAsText(null) ?? "0";
+        Map? map = this._maps?.FirstOrDefault(x => x.Name == value);
+        return map is not null ? (uint)map.Id : uint.Parse(value, CultureInfo.InvariantCulture);
     }
 
     private UiState GetUIState()
@@ -453,34 +500,59 @@ public partial class MainForm : Form
     {
         if (this._races is not null)
         {
-            this.cb_Identity_Race.Items.AddRange(this._races.Select(x => x.Name).ToArray());
+            this._raceHandler.ComboBox.Items.AddRange(this._races.Select(x => x.Name).ToArray());
+        }
+        else
+        {
+            this._raceHandler.ComboBox.DropDownStyle = ComboBoxStyle.DropDown;
         }
 
         if (this._professions is not null)
         {
-            this.cb_Identity_Profession.Items.AddRange(this._professions.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
+            this._professionHandler.ComboBox.Items.AddRange(this._professions.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
+        }
+        else
+        {
+            this._professionHandler.ComboBox.DropDownStyle = ComboBoxStyle.DropDown;
         }
 
         if (this._specializations is not null)
         {
-            this.cb_Identity_Spec.Items.AddRange(this._specializations.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
+            this._specializationHandler.ComboBox.Items.AddRange(this._specializations.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
+        }
+        else
+        {
+            this._specializationHandler.ComboBox.DropDownStyle = ComboBoxStyle.DropDown;
         }
 
         if (this._maps is not null)
         {
-            this.cb_Map_ID.Items.AddRange(this._maps.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
-            this.cb_Map_Type.Items.AddRange(this._maps.Select(x => x.Type.ToString()).Distinct().ToArray());
+            this._mapIdHandler.ComboBox.Items.AddRange(this._maps.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
+            this._mapTypeHandler.ComboBox.Items.AddRange(this._maps.Select(x => x.Type.ToString()).Distinct().ToArray());
+        }
+        else
+        {
+            this._mapIdHandler.ComboBox.DropDownStyle = ComboBoxStyle.DropDown;
+            this._mapTypeHandler.ComboBox.DropDownStyle = ComboBoxStyle.DropDown;
         }
 
         if (this._worlds is not null)
         {
-            this.cb_World_ID.Items.AddRange(this._worlds.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
+            this._worldHandler.ComboBox.Items.AddRange(this._worlds.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
+        }
+        else
+        {
+            this._worldHandler.ComboBox.DropDownStyle = ComboBoxStyle.DropDown;
         }
 
-        this.cb_Identity_Mount.Items.Add(string.Empty);
+        this._mountHandler.ComboBox.Items.Add(string.Empty);
         if (this._mounts is not null)
         {
-            this.cb_Identity_Mount.Items.AddRange(this._mounts.Select(x => x.Name).ToArray());
+            this._mountHandler.ComboBox.Items.AddRange(this._mounts.Select(x => x.Name).ToArray());
+        }
+        else
+        {
+            this._mountHandler.ComboBox.DropDownStyle = ComboBoxStyle.DropDown;
         }
     }
 
@@ -613,11 +685,11 @@ public partial class MainForm : Form
         if (saveData.Identity is not null)
         {
             this.tb_Identity_Name.Text = saveData.Identity.Name;
-            this.cb_Identity_Race.SelectedItem = saveData.Identity.Race;
-            this.cb_Identity_Profession.SelectedItem = saveData.Identity.Profession;
-            this.cb_Identity_Spec.SelectedItem = saveData.Identity.Specialization;
-            this.cb_World_ID.SelectedItem = saveData.Identity.WorldId;
-            this.cb_UI_Scale.SelectedItem = saveData.Identity.UISize;
+            this._raceHandler.SetValue(saveData.Identity.Race);
+            this._professionHandler.SetValue(saveData.Identity.Profession);
+            this._specializationHandler.SetValue(saveData.Identity.Specialization);
+            this._worldHandler.SetValue(saveData.Identity.WorldId);
+            this._uiScaleHandler.SetValue(saveData.Identity.UISize);
             this.cb_Identity_IsCommander.Checked = saveData.Identity.IsCommander;
             this.tb_UI_FOV.Text = saveData.Identity.FOV.ToString();
         }
@@ -644,10 +716,10 @@ public partial class MainForm : Form
             this.tb_Map_CenterY.Text = saveData.Context.MapCenter.Y.ToString();
             this.tb_Map_Scale.Text = saveData.Context.MapScale.ToString();
 
-            this.cb_Map_ID.SelectedItem = saveData.Context.MapId;
-            this.cb_Map_Type.SelectedItem = saveData.Context.MapType;
+            this._mapIdHandler.SetValue(saveData.Context.MapId);
+            this._mapTypeHandler.SetValue(saveData.Context.MapType);
 
-            this.cb_Identity_Mount.SelectedItem = saveData.Context.Mount;
+            this._mountHandler.SetValue(saveData.Context.Mount);
         }
     }
 
